@@ -91,11 +91,14 @@ export function useLogMutations(userId: string, weekStart: IsoDate) {
   const key = logKeys.week(userId, weekStart);
   const [failed, setFailed] = useState<{ action: LogAction; message: string } | null>(null);
 
-  const mutation = useMutation({
-    mutationFn: (action: LogAction) =>
-      action.kind === "set"
-        ? upsertLog(userId, action.moduleId, action.date, action.status, action.timezone)
-        : deleteLog(userId, action.moduleId, action.date),
+  const mutation = useMutation<void, Error, LogAction, { previous: Log[] | undefined }>({
+    mutationFn: async (action) => {
+      if (action.kind === "set") {
+        await upsertLog(userId, action.moduleId, action.date, action.status, action.timezone);
+      } else {
+        await deleteLog(userId, action.moduleId, action.date);
+      }
+    },
     onMutate: async (action) => {
       setFailed(null);
       await qc.cancelQueries({ queryKey: key });
