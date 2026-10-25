@@ -10,8 +10,12 @@ import {
 } from "@/lib/validation/goal";
 
 /** Drops undefined keys so partial updates satisfy exactOptionalPropertyTypes. */
-function defined<T extends Record<string, unknown>>(obj: T): Partial<T> {
-  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as Partial<T>;
+function defined<T extends Record<string, unknown>>(
+  obj: T,
+): { [K in keyof T]?: Exclude<T[K], undefined> } {
+  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as {
+    [K in keyof T]?: Exclude<T[K], undefined>;
+  };
 }
 
 export type Goal = Tables<"goals">;
