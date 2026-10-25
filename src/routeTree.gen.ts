@@ -9,27 +9,97 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
+  '/history': typeof AuthenticatedHistoryRoute
+}
+export interface FileRoutesByTo {
+  '/history': typeof AuthenticatedHistoryRoute
+  '/': typeof AuthenticatedIndexRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/' | '/history'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/history' | '/'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/_authenticated/history'
+    | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/history': {
+      id: '/_authenticated/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
