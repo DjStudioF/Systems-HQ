@@ -69,6 +69,8 @@ function Dashboard() {
   const mon = weekStart(today);
   const sun = addDays(mon, 6);
   if (!profile) return null;
+  const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
+  const hasGoals = activeGoals.length > 0;
 
   return (
     <PageContainer>
