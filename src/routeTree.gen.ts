@@ -17,7 +17,6 @@ import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
-import { Route as DevDesignRouteImport } from './routes/dev.design'
 import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authenticated/goals.index'
 import { Route as AuthenticatedGoalsGoalIdRouteImport } from './routes/_authenticated/goals.$goalId'
 import { Route as AuthenticatedGoalsNewRouteImport } from './routes/_authenticated/goals.new'
@@ -62,11 +61,6 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const DevDesignRoute = DevDesignRouteImport.update({
-  id: '/dev/design',
-  path: '/dev/design',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedGoalsIndexRoute = AuthenticatedGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -98,7 +92,6 @@ export interface FileRoutesByFullPath {
   '/history': typeof AuthenticatedHistoryRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/dev/design': typeof DevDesignRoute
   '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
   '/goals/': typeof AuthenticatedGoalsIndexRoute
@@ -111,7 +104,6 @@ export interface FileRoutesByTo {
   '/history': typeof AuthenticatedHistoryRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/dev/design': typeof DevDesignRoute
   '/': typeof AuthenticatedIndexRoute
   '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
@@ -127,7 +119,6 @@ export interface FileRoutesById {
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/dev/design': typeof DevDesignRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/_authenticated/goals/new': typeof AuthenticatedGoalsNewRoute
@@ -144,7 +135,6 @@ export interface FileRouteTypes {
     | '/history'
     | '/review'
     | '/settings'
-    | '/dev/design'
     | '/goals/$goalId'
     | '/goals/new'
     | '/goals/'
@@ -157,7 +147,6 @@ export interface FileRouteTypes {
     | '/history'
     | '/review'
     | '/settings'
-    | '/dev/design'
     | '/'
     | '/goals/$goalId'
     | '/goals/new'
@@ -172,7 +161,6 @@ export interface FileRouteTypes {
     | '/_authenticated/history'
     | '/_authenticated/review'
     | '/_authenticated/settings'
-    | '/dev/design'
     | '/_authenticated/'
     | '/_authenticated/goals/$goalId'
     | '/_authenticated/goals/new'
@@ -185,7 +173,6 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  DevDesignRoute: typeof DevDesignRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -245,13 +232,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/dev/design': {
-      id: '/dev/design'
-      path: '/dev/design'
-      fullPath: '/dev/design'
-      preLoaderRoute: typeof DevDesignRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/goals/': {
       id: '/_authenticated/goals/'
@@ -314,7 +294,6 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  DevDesignRoute: DevDesignRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
