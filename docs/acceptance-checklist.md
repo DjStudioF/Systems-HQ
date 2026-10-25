@@ -45,5 +45,19 @@ Status values: PASS / FAIL / NOT RUN. Updated at the end of each stage.
 | Local midnight / Monday rollover | PASS (code path) | useLocalToday re-reads the clock on focus/visibility/60s interval; week range and log query key derive from it |
 | Test records removed afterwards | PASS | test goal/routine archived, all test check-ins deleted; 0 logs remain for the test date |
 
+## Stage 4
+| Check | Status | Notes |
+|---|---|---|
+| Migration: start/submit weekly review functions with server-computed frozen snapshot | PASS | drizzle/migrations/0002_weekly_review_functions.sql; snapshot write gated by app.snapshot_write session flag |
+| Typecheck (tsgo), lint, vitest | PASS | 25 tests; 0 lint errors on new files |
+| Browser: draft text survives reload | PASS | saved draft reloaded intact |
+| Browser: reopening the week creates no duplicate | PASS | three separate visits returned the same row (UNIQUE + get-or-create) |
+| Browser: submitted snapshot unchanged after schedule edit | PASS | routine schedule changed to Mondays-only after submit; snapshot still shows the frozen 7-day target |
+| Browser: past week without snapshot shows honest limitation | PASS | "No metrics snapshot was captured… can't be reconstructed" |
+| Browser: save failure keeps entered text + Retry | PASS | network blocked during save; error shown, textarea text intact, retry succeeded |
+| Browser: unsaved-change protection | PASS | navigation blocked with "Leave without saving?" dialog; beforeunload armed |
+| Browser: history pagination, filters, per-row correction and clear | PASS | filters in URL search params; corrections bump revision, "edited N×" shown |
+| Test records removed afterwards | PASS | test logs/reviews deleted; test goals/routines archived; 0 logs, 0 reviews remain |
+
 ## Later stages
-Review, backup and remaining browser tests in spec §17: NOT RUN (not yet built).
+Backup and remaining browser tests in spec §17: NOT RUN (not yet built).

@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as DevDesignRouteImport } from './routes/dev.design'
 import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authenticated/goals.index'
@@ -49,6 +50,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
 const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   id: '/history',
   path: '/history',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReviewRoute = AuthenticatedReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/': typeof AuthenticatedIndexRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/history'
+    | '/review'
     | '/settings'
     | '/dev/design'
     | '/goals/$goalId'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/history'
+    | '/review'
     | '/settings'
     | '/dev/design'
     | '/'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/_authenticated/history'
+    | '/_authenticated/review'
     | '/_authenticated/settings'
     | '/dev/design'
     | '/_authenticated/'
@@ -220,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/review': {
+      id: '/_authenticated/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof AuthenticatedReviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -267,6 +286,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedReviewRoute: typeof AuthenticatedReviewRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedGoalsGoalIdRoute: typeof AuthenticatedGoalsGoalIdRoute
@@ -277,6 +297,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedReviewRoute: AuthenticatedReviewRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedGoalsGoalIdRoute: AuthenticatedGoalsGoalIdRoute,

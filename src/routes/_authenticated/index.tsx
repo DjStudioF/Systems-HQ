@@ -24,7 +24,9 @@ import {
   moduleRatio,
   type DailyStatus,
 } from "@/lib/calc/consistency";
-import { addDays, formatIsoDate, localToday, weekStart, type IsoDate } from "@/lib/date/local-date";
+import { addDays, formatIsoDate, weekStart } from "@/lib/date/local-date";
+import { useLocalToday } from "@/lib/date/use-local-today";
+import { reviewsQuery } from "@/lib/services/reviews";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -51,24 +53,6 @@ const HOW_IT_WORKS = [
   "Weekly consistency measures follow-through; time elapsed does not measure goal completion.",
   "Review weekly and keep, tweak, or drop what is not working.",
 ];
-
-/** Re-reads the local date on focus/visibility so an idle tab rolls over at midnight. */
-function useLocalToday(tz: string) {
-  const [today, setToday] = useState(() => localToday(tz, new Date()));
-  useEffect(() => {
-    const check = () => setToday(localToday(tz, new Date()));
-    check();
-    window.addEventListener("focus", check);
-    document.addEventListener("visibilitychange", check);
-    const t = window.setInterval(check, 60_000);
-    return () => {
-      window.removeEventListener("focus", check);
-      document.removeEventListener("visibilitychange", check);
-      window.clearInterval(t);
-    };
-  }, [tz]);
-  return today;
-}
 
 /** Tracks connectivity so the dashboard can switch to read-only when offline. */
 function useOnline() {
@@ -108,6 +92,8 @@ function Dashboard() {
   const online = useOnline();
   const { data: weekLogs } = useQuery(weekLogsQuery(user.id, mon));
   const logs = useMemo(() => weekLogs ?? [], [weekLogs]);
+  const { data: reviews } = useQuery(reviewsQuery(user.id));
+  const thisWeekReview = reviews?.find((r) => r.week_start === mon);
 
   if (!profile) return null;
   const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
@@ -222,9 +208,25 @@ function Dashboard() {
         </Section>
 
         <Section id="review" title="Weekly review">
-          <EmptyState title="No reviews yet.">
-            Weekly reviews arrive in a later build stage.
-          </EmptyState>
+          <div className="surface flex flex-wrap items-center justify-between gap-3 p-4">
+            <p className="text-sm text-muted-foreground">
+              {thisWeekReview
+                ? thisWeekReview.state === "submitted"
+                  ? "This week's review is submitted."
+                  : "This week's review is a draft."
+                : "Reflect on the week and lock in next week's focus."}
+            </p>
+            <Link
+              to="/review"
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              {thisWeekReview
+                ? thisWeekReview.state === "submitted"
+                  ? "View this week's review"
+                  : "Continue this week's review"
+                : "Start this week's review"}
+            </Link>
+          </div>
         </Section>
 
         <Section id="how" title="How this works">
