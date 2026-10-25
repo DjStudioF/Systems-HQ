@@ -1,5 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { goalConsistency, isOnTrack, moduleRatio, moduleTarget, timeElapsed } from "./consistency";
+import {
+  countSuccesses,
+  goalConsistency,
+  isOnTrack,
+  moduleRatio,
+  moduleTarget,
+  timeElapsed,
+} from "./consistency";
+
+describe("countSuccesses", () => {
+  it("counts Done and Minimum as one success each", () => {
+    expect(countSuccesses(["done", "minimum", "skipped"])).toBe(2);
+    expect(countSuccesses(["done", "done", "done"])).toBe(3);
+    expect(countSuccesses(["minimum"])).toBe(1);
+  });
+  it("counts Skipped and days with no log as zero", () => {
+    expect(countSuccesses(["skipped", "skipped"])).toBe(0);
+    expect(countSuccesses([])).toBe(0);
+  });
+});
 
 describe("moduleTarget", () => {
   it("is the count of selected days, never prorated", () => {

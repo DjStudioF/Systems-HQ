@@ -11,9 +11,20 @@
  */
 import { daysBetween, type IsoDate } from "@/lib/date/local-date";
 
+/** Daily check-in status. Done and Minimum each earn one success. */
+export type DailyStatus = "done" | "minimum" | "skipped";
+
 /** Weekly target = number of selected days (full week, never prorated). */
 export function moduleTarget(days: number[]): number {
   return days.length;
+}
+
+/**
+ * Successes in a set of daily statuses: Done and Minimum each earn 1;
+ * Skipped and days with no log earn 0.
+ */
+export function countSuccesses(statuses: DailyStatus[]): number {
+  return statuses.filter((s) => s === "done" || s === "minimum").length;
 }
 
 /** Week ratio for one module. Null when the module has no scheduled days. */
