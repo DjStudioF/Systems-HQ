@@ -15,7 +15,9 @@ export const Route = createFileRoute("/_authenticated/history")({
     <PageContainer>
       <h1 className="text-3xl font-semibold tracking-tight">History</h1>
       <div className="mt-6">
-        <EmptyState title="No check-ins recorded yet.">Filters and corrections arrive in a later build stage.</EmptyState>
+        <EmptyState title="No check-ins recorded yet.">
+          Filters and corrections arrive in a later build stage.
+        </EmptyState>
       </div>
     </PageContainer>
   ),

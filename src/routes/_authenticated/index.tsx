@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
 import { MottoEditor } from "@/components/app/MottoEditor";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { profileQuery } from "@/lib/services/profile";
 import { addDays, formatIsoDate, localToday, weekStart } from "@/lib/date/local-date";
@@ -13,9 +18,15 @@ export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "Dashboard · Systems HQ" },
-      { name: "description", content: "Today's routines, this week's consistency, goals and weekly review." },
+      {
+        name: "description",
+        content: "Today's routines, this week's consistency, goals and weekly review.",
+      },
       { property: "og:title", content: "Dashboard · Systems HQ" },
-      { property: "og:description", content: "Today's routines, this week's consistency, goals and weekly review." },
+      {
+        property: "og:description",
+        content: "Today's routines, this week's consistency, goals and weekly review.",
+      },
     ],
   }),
   component: Dashboard,
@@ -66,10 +77,14 @@ function Dashboard() {
                 {formatIsoDate(today)} <span className="text-xs">· {tz.replace(/_/g, " ")}</span>
               </p>
             </TooltipTrigger>
-            <TooltipContent>Dates follow your saved timezone ({tz}). Change it in Settings.</TooltipContent>
+            <TooltipContent>
+              Dates follow your saved timezone ({tz}). Change it in Settings.
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <h1 className="text-3xl font-semibold tracking-tight">{profile.display_name ? `Hi, ${profile.display_name}` : "Your systems"}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          {profile.display_name ? `Hi, ${profile.display_name}` : "Your systems"}
+        </h1>
         <MottoEditor userId={user.id} motto={profile.motto} />
       </header>
 
@@ -80,22 +95,34 @@ function Dashboard() {
           </EmptyState>
         </Section>
 
-        <Section id="week" title="This week" meta={`${formatIsoDate(mon, { month: "short", day: "numeric" })} – ${formatIsoDate(sun, { month: "short", day: "numeric" })}`}>
-          <EmptyState title="No routines yet.">Weekly progress appears once you have routines.</EmptyState>
+        <Section
+          id="week"
+          title="This week"
+          meta={`${formatIsoDate(mon, { month: "short", day: "numeric" })} – ${formatIsoDate(sun, { month: "short", day: "numeric" })}`}
+        >
+          <EmptyState title="No routines yet.">
+            Weekly progress appears once you have routines.
+          </EmptyState>
         </Section>
 
         <Section id="goals" title="Goals">
-          <EmptyState title="No goals yet.">Goals you create will show weekly consistency and time elapsed here.</EmptyState>
+          <EmptyState title="No goals yet.">
+            Goals you create will show weekly consistency and time elapsed here.
+          </EmptyState>
         </Section>
 
         <Section id="review" title="Weekly review">
-          <EmptyState title="No reviews yet.">Weekly reviews arrive in a later build stage.</EmptyState>
+          <EmptyState title="No reviews yet.">
+            Weekly reviews arrive in a later build stage.
+          </EmptyState>
         </Section>
 
         <Section id="how" title="How this works">
           <Accordion type="single" collapsible className="surface px-4">
             <AccordionItem value="how" className="border-none">
-              <AccordionTrigger className="text-base">Five ideas behind Systems HQ</AccordionTrigger>
+              <AccordionTrigger className="text-base">
+                Five ideas behind Systems HQ
+              </AccordionTrigger>
               <AccordionContent>
                 <ol className="list-decimal space-y-2 pl-5 text-muted-foreground">
                   {HOW_IT_WORKS.map((t) => (
@@ -111,11 +138,23 @@ function Dashboard() {
   );
 }
 
-function Section({ id, title, meta, children }: { id: string; title: string; meta?: string; children: React.ReactNode }) {
+function Section({
+  id,
+  title,
+  meta,
+  children,
+}: {
+  id: string;
+  title: string;
+  meta?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-20">
       <div className="mb-3 flex items-baseline justify-between gap-4">
-        <h2 id={`${id}-h`} className="text-xl font-semibold tracking-tight">{title}</h2>
+        <h2 id={`${id}-h`} className="text-xl font-semibold tracking-tight">
+          {title}
+        </h2>
         {meta && <p className="text-sm text-muted-foreground">{meta}</p>}
       </div>
       {children}

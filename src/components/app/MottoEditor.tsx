@@ -22,7 +22,15 @@ export function MottoEditor({ userId, motto }: { userId: string; motto: string }
     return (
       <div className="flex items-center gap-1">
         <p className="text-muted-foreground">“{motto}”</p>
-        <Button variant="ghost" size="icon" aria-label="Edit motto" onClick={() => { setValue(motto); setEditing(true); }}>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Edit motto"
+          onClick={() => {
+            setValue(motto);
+            setEditing(true);
+          }}
+        >
           <Pencil />
         </Button>
       </div>
@@ -37,13 +45,32 @@ export function MottoEditor({ userId, motto }: { userId: string; motto: string }
       }}
     >
       <div className="flex-1">
-        <label htmlFor="motto" className="sr-only">Motto</label>
-        <Input id="motto" value={value} maxLength={MOTTO_MAX} onChange={(e) => setValue(e.target.value)} className="h-11" aria-invalid={save.isError} aria-describedby={save.isError ? "motto-err" : undefined} autoFocus />
-        {save.isError && <p id="motto-err" role="alert" className="mt-1 text-sm text-destructive">{save.error.message}</p>}
+        <label htmlFor="motto" className="sr-only">
+          Motto
+        </label>
+        <Input
+          id="motto"
+          value={value}
+          maxLength={MOTTO_MAX}
+          onChange={(e) => setValue(e.target.value)}
+          className="h-11"
+          aria-invalid={save.isError}
+          aria-describedby={save.isError ? "motto-err" : undefined}
+          autoFocus
+        />
+        {save.isError && (
+          <p id="motto-err" role="alert" className="mt-1 text-sm text-destructive">
+            {save.error.message}
+          </p>
+        )}
       </div>
       <div className="flex gap-2">
-        <Button type="submit" disabled={save.isPending}>{save.isPending ? "Saving…" : "Save"}</Button>
-        <Button type="button" variant="ghost" onClick={() => setEditing(false)}>Cancel</Button>
+        <Button type="submit" disabled={save.isPending}>
+          {save.isPending ? "Saving…" : "Save"}
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => setEditing(false)}>
+          Cancel
+        </Button>
       </div>
     </form>
   );

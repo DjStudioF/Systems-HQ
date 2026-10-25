@@ -13,7 +13,7 @@ export function isThemePref(v: unknown): v is ThemePref {
 /** Apply in the browser and remember as a pre-paint hint. Call from effects/handlers only. */
 export function applyTheme(pref: ThemePref) {
   const dark = resolveTheme(pref, window.matchMedia("(prefers-color-scheme: dark)").matches);
-  document.documentElement.classList.toggle("dark", dark);
+  document.documentElement.classList.toggle("dark", dark === "dark");
   try {
     localStorage.setItem(THEME_STORAGE_KEY, pref);
   } catch {

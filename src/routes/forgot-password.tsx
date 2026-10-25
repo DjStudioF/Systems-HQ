@@ -39,18 +39,39 @@ function ForgotPage() {
   return (
     <AuthCard title="Reset password" subtitle="We'll email a link if the address has an account.">
       {sent ? (
-        <p role="status" className="text-sm">Check your inbox for a reset link. It may take a minute.</p>
+        <p role="status" className="text-sm">
+          Check your inbox for a reset link. It may take a minute.
+        </p>
       ) : (
         <form onSubmit={submit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" required autoComplete="email" className="h-11" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              className="h-11"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-          <Button type="submit" className="w-full" disabled={pending}>{pending ? "Sending…" : "Send reset link"}</Button>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Sending…" : "Send reset link"}
+          </Button>
         </form>
       )}
-      <Link to="/login" className="mt-4 inline-flex h-11 items-center text-sm text-primary hover:underline">Back to sign in</Link>
+      <Link
+        to="/login"
+        className="mt-4 inline-flex h-11 items-center text-sm text-primary hover:underline"
+      >
+        Back to sign in
+      </Link>
     </AuthCard>
   );
 }

@@ -3,7 +3,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { listTimeZones } from "@/lib/date/timezones";
 
-export function TimezonePicker({ id, value, onChange }: { id: string; value: string; onChange: (tz: string) => void }) {
+export function TimezonePicker({
+  id,
+  value,
+  onChange,
+}: {
+  id: string;
+  value: string;
+  onChange: (tz: string) => void;
+}) {
   const all = useMemo(() => listTimeZones(), []);
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => {
@@ -15,8 +23,16 @@ export function TimezonePicker({ id, value, onChange }: { id: string; value: str
   return (
     <div className="space-y-2">
       <Label htmlFor={`${id}-search`}>Search timezones</Label>
-      <Input id={`${id}-search`} placeholder="e.g. Berlin, New_York, Tokyo" value={query} onChange={(e) => setQuery(e.target.value)} className="h-11" />
-      <Label htmlFor={id} className="sr-only">Timezone</Label>
+      <Input
+        id={`${id}-search`}
+        placeholder="e.g. Berlin, New_York, Tokyo"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="h-11"
+      />
+      <Label htmlFor={id} className="sr-only">
+        Timezone
+      </Label>
       <select
         id={id}
         value={value}

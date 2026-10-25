@@ -17,8 +17,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // Logging controls. Selected state is set via aria-pressed and adds a check icon.
         done: "border border-primary bg-card text-primary hover:bg-primary-soft aria-pressed:bg-primary aria-pressed:text-primary-foreground",
-        minimum: "border border-input bg-card text-foreground hover:bg-primary-soft aria-pressed:border-primary aria-pressed:bg-primary-soft aria-pressed:text-primary-soft-foreground",
-        skipped: "border border-input bg-card text-muted-foreground hover:bg-secondary aria-pressed:bg-secondary aria-pressed:text-foreground aria-pressed:border-foreground/30",
+        minimum:
+          "border border-input bg-card text-foreground hover:bg-primary-soft aria-pressed:border-primary aria-pressed:bg-primary-soft aria-pressed:text-primary-soft-foreground",
+        skipped:
+          "border border-input bg-card text-muted-foreground hover:bg-secondary aria-pressed:bg-secondary aria-pressed:text-foreground aria-pressed:border-foreground/30",
       },
       size: {
         default: "h-11 px-4",

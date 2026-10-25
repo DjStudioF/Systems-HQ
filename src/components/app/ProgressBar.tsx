@@ -7,7 +7,17 @@ export function textBar(ratio: number): string {
 }
 
 /** Accessible bar. A null ratio shows the provided text instead of a fake 0%. */
-export function ProgressBar({ ratio, label, nullText, className }: { ratio: number | null; label: string; nullText?: string; className?: string }) {
+export function ProgressBar({
+  ratio,
+  label,
+  nullText,
+  className,
+}: {
+  ratio: number | null;
+  label: string;
+  nullText?: string;
+  className?: string;
+}) {
   if (ratio === null) {
     return (
       <div className={cn("text-sm text-muted-foreground", className)}>
@@ -20,10 +30,23 @@ export function ProgressBar({ ratio, label, nullText, className }: { ratio: numb
   const pct = Math.round(r * 100);
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
-        <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${pct}%` }} />
+      <div
+        role="progressbar"
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={pct}
+        className="h-2 flex-1 overflow-hidden rounded-full bg-secondary"
+      >
+        <div
+          className="h-full rounded-full bg-primary transition-[width]"
+          style={{ width: `${pct}%` }}
+        />
       </div>
-      <span className="w-12 text-right text-sm tabular-nums text-muted-foreground" aria-hidden="true">
+      <span
+        className="w-12 text-right text-sm tabular-nums text-muted-foreground"
+        aria-hidden="true"
+      >
         {pct}%
       </span>
     </div>

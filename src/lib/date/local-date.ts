@@ -51,11 +51,18 @@ export function weekStart(d: IsoDate): IsoDate {
 export function daysBetween(a: IsoDate, b: IsoDate): number {
   const pa = parseIsoDate(a);
   const pb = parseIsoDate(b);
-  return Math.round((Date.UTC(pb.y, pb.m - 1, pb.day) - Date.UTC(pa.y, pa.m - 1, pa.day)) / 86_400_000);
+  return Math.round(
+    (Date.UTC(pb.y, pb.m - 1, pb.day) - Date.UTC(pa.y, pa.m - 1, pa.day)) / 86_400_000,
+  );
 }
 
 /** Human label for a stored calendar date, without timezone shifting. */
-export function formatIsoDate(d: IsoDate, opts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric" }): string {
+export function formatIsoDate(
+  d: IsoDate,
+  opts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric" },
+): string {
   const { y, m, day } = parseIsoDate(d);
-  return new Intl.DateTimeFormat(undefined, { ...opts, timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, day)));
+  return new Intl.DateTimeFormat(undefined, { ...opts, timeZone: "UTC" }).format(
+    new Date(Date.UTC(y, m - 1, day)),
+  );
 }

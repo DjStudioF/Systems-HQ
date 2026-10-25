@@ -31,7 +31,9 @@ export function TimezoneSetup({ userId }: { userId: string }) {
       <h1 className="mt-1 text-3xl font-semibold tracking-tight">Confirm your timezone</h1>
       <p className="mt-2 text-muted-foreground">
         Your timezone decides what counts as "today" for check-ins.
-        {detected ? ` Your browser reports ${detected.replace(/_/g, " ")}.` : " We couldn't detect it, so please pick one."}
+        {detected
+          ? ` Your browser reports ${detected.replace(/_/g, " ")}.`
+          : " We couldn't detect it, so please pick one."}
       </p>
       <form
         className="surface mt-6 space-y-4 p-5"
@@ -42,7 +44,11 @@ export function TimezoneSetup({ userId }: { userId: string }) {
       >
         <TimezonePicker id="tz-setup" value={tz} onChange={setTz} />
         <p className="text-sm text-muted-foreground">
-          Today there is <span className="font-medium text-foreground">{formatIsoDate(localToday(tz, new Date()))}</span>.
+          Today there is{" "}
+          <span className="font-medium text-foreground">
+            {formatIsoDate(localToday(tz, new Date()))}
+          </span>
+          .
         </p>
         {save.isError && (
           <p role="alert" className="text-sm text-destructive">
@@ -53,7 +59,9 @@ export function TimezoneSetup({ userId }: { userId: string }) {
           {save.isPending ? "Saving…" : `Use ${tz.replace(/_/g, " ")}`}
         </Button>
       </form>
-      <p className="mt-4 text-sm text-muted-foreground">Steps 2–3 (first goal and routine) arrive in the next build stage.</p>
+      <p className="mt-4 text-sm text-muted-foreground">
+        Steps 2–3 (first goal and routine) arrive in the next build stage.
+      </p>
     </main>
   );
 }

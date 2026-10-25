@@ -36,7 +36,8 @@ function ResetPage() {
     });
     supabase.auth.getSession().then(({ data: s }) => {
       if (s.session && isRecovery) setReady("ok");
-      else if (!isRecovery) setTimeout(() => setReady((r) => (r === "checking" ? "invalid" : r)), 1500);
+      else if (!isRecovery)
+        setTimeout(() => setReady((r) => (r === "checking" ? "invalid" : r)), 1500);
     });
     return () => data.subscription.unsubscribe();
   }, []);
@@ -49,7 +50,12 @@ function ResetPage() {
     setPending(true);
     const { error } = await supabase.auth.updateUser({ password: pw });
     setPending(false);
-    if (error) return setError(error.message.includes("weak") || error.message.includes("pwned") ? "That password is too common. Choose another." : "Couldn't update the password. Request a new link.");
+    if (error)
+      return setError(
+        error.message.includes("weak") || error.message.includes("pwned")
+          ? "That password is too common. Choose another."
+          : "Couldn't update the password. Request a new link.",
+      );
     await signOutAndClear(qc);
     navigate({ to: "/login", search: { reason: "reset" }, replace: true });
   }
@@ -60,21 +66,48 @@ function ResetPage() {
       {ready === "invalid" && (
         <div className="space-y-3 text-sm">
           <p role="alert">This reset link is invalid or expired.</p>
-          <Link to="/forgot-password" className="inline-flex h-11 items-center text-primary hover:underline">Request a new link</Link>
+          <Link
+            to="/forgot-password"
+            className="inline-flex h-11 items-center text-primary hover:underline"
+          >
+            Request a new link
+          </Link>
         </div>
       )}
       {ready === "ok" && (
         <form onSubmit={submit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="pw">New password</Label>
-            <Input id="pw" type="password" autoComplete="new-password" required className="h-11" value={pw} onChange={(e) => setPw(e.target.value)} />
+            <Input
+              id="pw"
+              type="password"
+              autoComplete="new-password"
+              required
+              className="h-11"
+              value={pw}
+              onChange={(e) => setPw(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="pw2">Confirm password</Label>
-            <Input id="pw2" type="password" autoComplete="new-password" required className="h-11" value={pw2} onChange={(e) => setPw2(e.target.value)} />
+            <Input
+              id="pw2"
+              type="password"
+              autoComplete="new-password"
+              required
+              className="h-11"
+              value={pw2}
+              onChange={(e) => setPw2(e.target.value)}
+            />
           </div>
-          {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-          <Button type="submit" className="w-full" disabled={pending}>{pending ? "Saving…" : "Update password"}</Button>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Saving…" : "Update password"}
+          </Button>
         </form>
       )}
     </AuthCard>
