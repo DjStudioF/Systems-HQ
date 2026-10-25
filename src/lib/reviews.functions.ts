@@ -8,7 +8,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
  */
 export const startWeeklyReviewFn = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { weekStart: string; timezone: string }) => input)
+  .validator((input: { weekStart: string; timezone: string }) => input)
   .handler(async ({ data, context }) => {
     const { data: review, error } = await context.supabase.rpc("start_weekly_review", {
       p_week_start: data.weekStart,
@@ -21,7 +21,7 @@ export const startWeeklyReviewFn = createServerFn({ method: "POST" })
 /** Marks the week's review submitted. Only a draft can be submitted. */
 export const submitWeeklyReviewFn = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { weekStart: string }) => input)
+  .validator((input: { weekStart: string }) => input)
   .handler(async ({ data, context }) => {
     const { data: review, error } = await context.supabase.rpc("submit_weekly_review", {
       p_week_start: data.weekStart,
