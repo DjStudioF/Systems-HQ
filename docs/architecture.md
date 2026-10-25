@@ -31,7 +31,7 @@
 - Triggers:
   - `logs_guard`: revision is server-maintained, starting at 1 and incrementing on every update. Date, module, owner and timezone_at_entry are immutable.
   - `modules_guard`: a module with logs can't change goal.
-  - `reviews_guard`: snapshot and state fields are writable only by server functions. A session flag will be set by the Stage 4 functions.
+  - `reviews_guard`: snapshot and state fields are writable only when the `app.snapshot_write` session flag is on. The security-definer functions `start_weekly_review` (get-or-create a week's draft with a frozen, server-computed metrics snapshot) and `submit_weekly_review` set it via `set_config`; clients can only update the four reflection texts. Snapshots are never reconstructed from current schedules.
   - `validate_profile`: checks the IANA timezone against `pg_timezone_names`.
   - `set_updated_at`: maintains audit timestamps.
 - Profile bootstrap: a security-definer trigger on `auth.users` inserts a profile row with timezone UTC and `timezone_confirmed = false`. The app then requires confirmation.
