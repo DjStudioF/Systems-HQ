@@ -10,8 +10,10 @@ describe("csvCell", () => {
     expect(csvCell(42)).toBe("42");
   });
   it("neutralises spreadsheet formula injection", () => {
+    // After CSV parsing, the cell value must start with the apostrophe guard.
+    // (A value containing CR/LF is also quote-wrapped, so strip a leading ".)
     for (const bad of ["=1+1", "+SUM(A1)", "-2+3", "@cmd", "\t=x", "\r=1"]) {
-      expect(csvCell(bad).startsWith("'")).toBe(true);
+      expect(csvCell(bad).replace(/^"/, "").startsWith("'")).toBe(true);
     }
     expect(csvCell('=HYPERLINK("http://evil")')).toBe('"\'=HYPERLINK(""http://evil"")"');
   });
