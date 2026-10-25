@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { WifiOff } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
 import { GoalCard } from "@/components/app/GoalCard";
 import { MottoEditor } from "@/components/app/MottoEditor";
+import { TodaySection } from "@/components/app/TodaySection";
+import { GoalWeekGroup } from "@/components/app/GoalWeekGroup";
 import {
   Accordion,
   AccordionContent,
@@ -13,8 +16,15 @@ import {
 } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { profileQuery } from "@/lib/services/profile";
-import { goalsQuery } from "@/lib/services/goals";
-import { addDays, formatIsoDate, localToday, weekStart } from "@/lib/date/local-date";
+import { goalsQuery, type GoalWithModules } from "@/lib/services/goals";
+import { weekLogsQuery, type Log } from "@/lib/services/logs";
+import {
+  countSuccesses,
+  goalConsistency,
+  moduleRatio,
+  type DailyStatus,
+} from "@/lib/calc/consistency";
+import { addDays, formatIsoDate, localToday, weekStart, type IsoDate } from "@/lib/date/local-date";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -60,6 +70,35 @@ function useLocalToday(tz: string) {
   return today;
 }
 
+/** Tracks connectivity so the dashboard can switch to read-only when offline. */
+function useOnline() {
+  const [online, setOnline] = useState(() => navigator.onLine);
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+  return online;
+}
+
+/** Weekly consistency for one goal from this week's logs. Null when nothing is scheduled. */
+function weekConsistency(goal: GoalWithModules, logs: Log[]): number | null {
+  const ratios = goal.modules
+    .filter((m) => !m.archived_at)
+    .map((m) => {
+      const statuses: DailyStatus[] = logs
+        .filter((l) => l.module_id === m.id)
+        .map((l) => l.status);
+      return moduleRatio(countSuccesses(statuses), m.days);
+    });
+  return goalConsistency(ratios);
+}
+
 function Dashboard() {
   const { user } = Route.useRouteContext();
   const { data: profile } = useQuery(profileQuery(user.id));
@@ -68,9 +107,15 @@ function Dashboard() {
   const today = useLocalToday(tz);
   const mon = weekStart(today);
   const sun = addDays(mon, 6);
+  const online = useOnline();
+  const { data: weekLogs } = useQuery(weekLogsQuery(user.id, mon));
+  const logs = useMemo(() => weekLogs ?? [], [weekLogs]);
+
   if (!profile) return null;
   const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
   const hasGoals = activeGoals.length > 0;
+  const goalsWithRoutines = activeGoals.filter((g) => g.modules.some((m) => !m.archived_at));
+  const threshold = profile.consistency_threshold;
 
   return (
     <PageContainer>
@@ -93,13 +138,32 @@ function Dashboard() {
         <MottoEditor userId={user.id} motto={profile.motto} />
       </header>
 
+      {!online && (
+        <div
+          role="status"
+          className="mt-6 flex items-center gap-2 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground"
+        >
+          <WifiOff className="size-4 shrink-0" aria-hidden="true" />
+          You're offline — showing your saved data. Check-ins are disabled until you reconnect.
+        </div>
+      )}
+
       <div className="mt-8 space-y-12">
-        <Section id="today" title="Today" meta="0 of 0 checked in">
-          <EmptyState title="Daily check-ins arrive in the next build stage.">
-            {hasGoals
-              ? "Your routines will appear here for one-tap check-ins."
-              : "Create a goal and routine first — nothing has been added for you."}
-          </EmptyState>
+        <Section id="today" title="Today">
+          {hasGoals ? (
+            <TodaySection
+              userId={user.id}
+              goals={activeGoals}
+              logs={logs}
+              today={today}
+              timezone={tz}
+              online={online}
+            />
+          ) : (
+            <EmptyState title="Nothing to check in yet.">
+              Create a goal and routine first — nothing has been added for you.
+            </EmptyState>
+          )}
         </Section>
 
         <Section
@@ -107,9 +171,24 @@ function Dashboard() {
           title="This week"
           meta={`${formatIsoDate(mon, { month: "short", day: "numeric" })} – ${formatIsoDate(sun, { month: "short", day: "numeric" })}`}
         >
-          <EmptyState title="No routines yet.">
-            Weekly progress appears once you have routines.
-          </EmptyState>
+          {goalsWithRoutines.length === 0 ? (
+            <EmptyState title="No routines yet.">
+              Weekly progress appears once you have routines.
+            </EmptyState>
+          ) : (
+            <div className="space-y-4">
+              {goalsWithRoutines.map((g) => (
+                <GoalWeekGroup
+                  key={g.id}
+                  goal={g}
+                  logs={logs}
+                  weekStart={mon}
+                  today={today}
+                  threshold={threshold}
+                />
+              ))}
+            </div>
+          )}
         </Section>
 
         <Section id="goals" title="Goals">
@@ -126,7 +205,13 @@ function Dashboard() {
           ) : (
             <div className="space-y-4">
               {activeGoals.map((g) => (
-                <GoalCard key={g.id} goal={g} today={today} />
+                <GoalCard
+                  key={g.id}
+                  goal={g}
+                  today={today}
+                  consistency={weekConsistency(g, logs)}
+                  threshold={threshold}
+                />
               ))}
               <Link
                 to="/goals"
