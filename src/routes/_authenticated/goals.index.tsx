@@ -10,7 +10,7 @@ import { goalsQuery } from "@/lib/services/goals";
 import { profileQuery } from "@/lib/services/profile";
 import { localToday } from "@/lib/date/local-date";
 
-export const Route = createFileRoute("/_authenticated/goals")({
+export const Route = createFileRoute("/_authenticated/goals/")({
   head: () => ({
     meta: [
       { title: "Goals · Systems HQ" },
