@@ -24,7 +24,9 @@ import {
   moduleRatio,
   type DailyStatus,
 } from "@/lib/calc/consistency";
-import { addDays, formatIsoDate, localToday, weekStart, type IsoDate } from "@/lib/date/local-date";
+import { addDays, formatIsoDate, weekStart } from "@/lib/date/local-date";
+import { useLocalToday } from "@/lib/date/use-local-today";
+import { reviewsQuery } from "@/lib/services/reviews";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -52,23 +54,6 @@ const HOW_IT_WORKS = [
   "Review weekly and keep, tweak, or drop what is not working.",
 ];
 
-/** Re-reads the local date on focus/visibility so an idle tab rolls over at midnight. */
-function useLocalToday(tz: string) {
-  const [today, setToday] = useState(() => localToday(tz, new Date()));
-  useEffect(() => {
-    const check = () => setToday(localToday(tz, new Date()));
-    check();
-    window.addEventListener("focus", check);
-    document.addEventListener("visibilitychange", check);
-    const t = window.setInterval(check, 60_000);
-    return () => {
-      window.removeEventListener("focus", check);
-      document.removeEventListener("visibilitychange", check);
-      window.clearInterval(t);
-    };
-  }, [tz]);
-  return today;
-}
 
 /** Tracks connectivity so the dashboard can switch to read-only when offline. */
 function useOnline() {
