@@ -62,7 +62,15 @@ export function WeekStrip({
                 future && !status && "opacity-50",
               )}
             >
-              {status === "done" ? "✓" : status === "minimum" ? "–" : status === "skipped" ? "×" : scheduled ? "" : "·"}
+              {status === "done"
+                ? "✓"
+                : status === "minimum"
+                  ? "–"
+                  : status === "skipped"
+                    ? "×"
+                    : scheduled
+                      ? ""
+                      : "·"}
             </span>
           </div>
         );

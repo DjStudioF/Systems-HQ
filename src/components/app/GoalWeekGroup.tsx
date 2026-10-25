@@ -72,12 +72,7 @@ export function GoalWeekGroup({
                   : `${successes} of ${moduleTarget(module.days)} this week`}
               </p>
             </div>
-            <WeekStrip
-              days={module.days}
-              statuses={statuses}
-              weekStart={weekStart}
-              today={today}
-            />
+            <WeekStrip days={module.days} statuses={statuses} weekStart={weekStart} today={today} />
           </li>
         ))}
       </ul>

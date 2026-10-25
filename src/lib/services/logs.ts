@@ -9,8 +9,7 @@ export type Log = Tables<"logs">;
 
 /** Query keys are always scoped by account id so caches never cross accounts. */
 export const logKeys = {
-  week: (userId: string, weekStart: IsoDate) =>
-    ["account", userId, "logs", weekStart] as const,
+  week: (userId: string, weekStart: IsoDate) => ["account", userId, "logs", weekStart] as const,
 };
 
 export async function fetchWeekLogs(userId: string, weekStart: IsoDate): Promise<Log[]> {
@@ -63,11 +62,7 @@ export async function upsertLog(
 }
 
 /** Clear entry removes the day's row entirely. */
-export async function deleteLog(
-  userId: string,
-  moduleId: string,
-  date: IsoDate,
-): Promise<void> {
+export async function deleteLog(userId: string, moduleId: string, date: IsoDate): Promise<void> {
   const { error } = await supabase
     .from("logs")
     .delete()

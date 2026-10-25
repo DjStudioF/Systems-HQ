@@ -91,9 +91,7 @@ function weekConsistency(goal: GoalWithModules, logs: Log[]): number | null {
   const ratios = goal.modules
     .filter((m) => !m.archived_at)
     .map((m) => {
-      const statuses: DailyStatus[] = logs
-        .filter((l) => l.module_id === m.id)
-        .map((l) => l.status);
+      const statuses: DailyStatus[] = logs.filter((l) => l.module_id === m.id).map((l) => l.status);
       return moduleRatio(countSuccesses(statuses), m.days);
     });
   return goalConsistency(ratios);
