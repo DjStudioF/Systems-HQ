@@ -13,7 +13,7 @@ describe("csvCell", () => {
     for (const bad of ["=1+1", "+SUM(A1)", "-2+3", "@cmd", "\t=x", "\r=1"]) {
       expect(csvCell(bad).startsWith("'")).toBe(true);
     }
-    expect(csvCell('=HYPERLINK("http://evil")')).toBe('\'"=HYPERLINK(""http://evil"")"');
+    expect(csvCell('=HYPERLINK("http://evil")')).toBe("\"'=HYPERLINK(\"\"http://evil\"\")\"");
   });
 });
 
