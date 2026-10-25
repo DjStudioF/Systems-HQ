@@ -193,7 +193,7 @@ export function BackupSection({ userId }: { userId: string }) {
         {restore.isError && (
           <ErrorState
             message={restore.error.message}
-            onRetry={pending ? () => restore.mutate(pending.backup) : undefined}
+            {...(pending ? { onRetry: () => restore.mutate(pending.backup) } : {})}
           />
         )}
         {restore.isSuccess && (

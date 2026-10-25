@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { Json } from "@/integrations/supabase/types";
 
 /**
  * Transactional same-account restore. The SQL function validates ownership,
@@ -11,7 +12,7 @@ export const restoreBackupFn = createServerFn({ method: "POST" })
   .inputValidator((input: { backup: unknown }) => input)
   .handler(async ({ data, context }) => {
     const { data: result, error } = await context.supabase.rpc("restore_account_backup", {
-      p_backup: data.backup,
+      p_backup: data.backup as Json,
     });
     if (error) {
       if (error.message.includes("different account")) {

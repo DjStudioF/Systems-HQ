@@ -184,10 +184,13 @@ const CSV_COLUMNS: Record<string, { key: string; label: string }[]> = {
   ],
 };
 
-export function backupCsv(backup: BackupFile, entity: keyof typeof CSV_COLUMNS): string {
+export function backupCsv(
+  backup: BackupFile,
+  entity: "goals" | "modules" | "logs" | "weekly_reviews",
+): string {
   const rows = (backup[entity] as unknown as Row[]).map((r) => ({
     ...r,
-    days: Array.isArray(r.days) ? r.days.join(" ") : r.days,
+    days: Array.isArray(r["days"]) ? (r["days"] as unknown[]).join(" ") : r["days"],
   }));
   return toCsv(rows, CSV_COLUMNS[entity]);
 }
