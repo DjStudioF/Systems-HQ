@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { History, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { History, LayoutDashboard, LogOut, NotebookPen, Settings } from "lucide-react";
 import { Brand } from "@/components/app/BrandMark";
 import { Button } from "@/components/ui/button";
 import { signOutAndClear } from "@/lib/auth/session";
@@ -58,6 +58,7 @@ export function AppShell({
             More
           </p>
           <NavLink to="/history" icon={<History />} label="History" />
+          <NavLink to="/review" icon={<NotebookPen />} label="Weekly review" />
           <NavLink to="/settings" icon={<Settings />} label="Settings" />
         </nav>
         <div className="mt-auto space-y-2 px-2 text-xs text-muted-foreground">
@@ -102,7 +103,7 @@ function NavLink({
   icon,
   label,
 }: {
-  to: "/history" | "/settings";
+  to: "/history" | "/review" | "/settings";
   icon: ReactNode;
   label: string;
 }) {

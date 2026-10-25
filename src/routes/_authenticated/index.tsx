@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { WifiOff } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
@@ -93,6 +93,8 @@ function Dashboard() {
   const online = useOnline();
   const { data: weekLogs } = useQuery(weekLogsQuery(user.id, mon));
   const logs = useMemo(() => weekLogs ?? [], [weekLogs]);
+  const { data: reviews } = useQuery(reviewsQuery(user.id));
+  const thisWeekReview = reviews?.find((r) => r.week_start === mon);
 
   if (!profile) return null;
   const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
@@ -207,9 +209,25 @@ function Dashboard() {
         </Section>
 
         <Section id="review" title="Weekly review">
-          <EmptyState title="No reviews yet.">
-            Weekly reviews arrive in a later build stage.
-          </EmptyState>
+          <div className="surface flex flex-wrap items-center justify-between gap-3 p-4">
+            <p className="text-sm text-muted-foreground">
+              {thisWeekReview
+                ? thisWeekReview.state === "submitted"
+                  ? "This week's review is submitted."
+                  : "This week's review is a draft."
+                : "Reflect on the week and lock in next week's focus."}
+            </p>
+            <Link
+              to="/review"
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+            >
+              {thisWeekReview
+                ? thisWeekReview.state === "submitted"
+                  ? "View this week's review"
+                  : "Continue this week's review"
+                : "Start this week's review"}
+            </Link>
+          </div>
         </Section>
 
         <Section id="how" title="How this works">
