@@ -11,7 +11,7 @@
 - `src/lib/date/`: pure calendar helpers with an injected clock (`localToday(tz, now)`). Dates are `YYYY-MM-DD` strings and are never parsed as UTC instants for display.
 - `src/lib/calc/`: pure derived-metric functions (module target/ratio, unweighted goal consistency, time elapsed). All take dates as arguments; none are stored in the database.
 - `src/lib/validation/`: shared Zod schemas.
-- `src/lib/services/`: data access. Query keys always start with `["account", userId, ...]`.
+- `src/lib/services/`: data access. Query keys always start with `["account", userId, ...]`. `logs.ts` owns the only check-in write path: a single upsert keyed on `UNIQUE(user_id, module_id, log_date)` (atomic, retry-safe; corrections are the same upsert and the `logs_guard` trigger bumps revision server-side), plus delete for Clear entry. `useLogMutations` applies optimistic cache updates with rollback and keeps the failed action so the UI can offer a persistent Retry.
 - `src/lib/auth/`: sign-out teardown and redirect sanitising.
 - `src/components/app/`: app components. `src/components/ui/` holds the primitives, including the logging button variants.
 - `src/routes/_authenticated/`: protected pages (`/`, `/goals` + `/goals/new` + `/goals/$goalId` + edit, `/settings`, `/history`). These are client-only (`ssr: false`). A route file that gains dot-nested children must either render `<Outlet />` or be renamed to `*.index.tsx` — `goals.index.tsx` is the list leaf for that reason.

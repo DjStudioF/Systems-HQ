@@ -1,14 +1,24 @@
 import { Link } from "@tanstack/react-router";
 import { ProgressBar } from "@/components/app/ProgressBar";
-import { timeElapsed } from "@/lib/calc/consistency";
+import { isOnTrack, timeElapsed } from "@/lib/calc/consistency";
 import type { GoalWithModules } from "@/lib/services/goals";
 import type { IsoDate } from "@/lib/date/local-date";
 
 /**
- * Goal summary card. Shows time elapsed (calendar-based, never labelled as
- * completion). Weekly consistency arrives with daily logging in Stage 3.
+ * Goal summary card. Shows weekly consistency (unweighted, vs the threshold)
+ * and time elapsed (calendar-based, never labelled as completion).
  */
-export function GoalCard({ goal, today }: { goal: GoalWithModules; today: IsoDate }) {
+export function GoalCard({
+  goal,
+  today,
+  consistency,
+  threshold,
+}: {
+  goal: GoalWithModules;
+  today: IsoDate;
+  consistency?: number | null;
+  threshold?: number;
+}) {
   const activeModules = goal.modules.filter((m) => !m.archived_at);
   const elapsed = timeElapsed(goal.start_date, goal.deadline, today);
 
@@ -31,6 +41,22 @@ export function GoalCard({ goal, today }: { goal: GoalWithModules; today: IsoDat
           ? "No routines yet"
           : `${activeModules.length} ${activeModules.length === 1 ? "routine" : "routines"}`}
       </p>
+      {consistency !== undefined && threshold !== undefined && (
+        <div className="space-y-1 pt-1">
+          <ProgressBar
+            ratio={consistency}
+            label="Consistency this week"
+            nullText="No scheduled routines"
+          />
+          {consistency !== null && (
+            <p className="text-xs text-muted-foreground">
+              {isOnTrack(consistency, threshold)
+                ? `On track (target ${Math.round(threshold * 100)}%)`
+                : `Below the ${Math.round(threshold * 100)}% target`}
+            </p>
+          )}
+        </div>
+      )}
       <ProgressBar
         ratio={elapsed}
         label="Time elapsed"
