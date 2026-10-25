@@ -24,7 +24,7 @@ AI coaching, payments, teams or social features, streak penalties, badges, notif
 
 ## Stage status
 - [x] Stage 1: foundation (schema, row-level security, auth, profile and timezone, theme, empty dashboard shell, design preview)
-- [ ] Stage 2: goals and modules, archive, calculation helpers
+- [x] Stage 2: goals and modules, archive, calculation helpers
 - [ ] Stage 3: daily logging, This week, goal metrics
 - [ ] Stage 4: history, weekly reviews, snapshots
 - [ ] Stage 5: export and restore
