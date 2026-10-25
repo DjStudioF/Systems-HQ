@@ -59,5 +59,21 @@ Status values: PASS / FAIL / NOT RUN. Updated at the end of each stage.
 | Browser: history pagination, filters, per-row correction and clear | PASS | filters in URL search params; corrections bump revision, "edited N×" shown |
 | Test records removed afterwards | PASS | test logs/reviews deleted; test goals/routines archived; 0 logs, 0 reviews remain |
 
+## Stage 5
+| Check | Status | Notes |
+|---|---|---|
+| Unit: CSV escaping and formula-injection protection | PASS | vitest, src/lib/backup/backup.test.ts |
+| Unit: backup validation rejects bad JSON, wrong version, bad enums/dates; preview counts + account match | PASS | vitest |
+| Typecheck (tsgo), lint, vitest | PASS | 31 tests; 0 lint errors on new files |
+| Export includes archived goals/modules, review snapshots, all rows; no auth secrets or email | PASS | inspected downloaded backup.json |
+| Browser: JSON + CSV downloads deliver real files | PASS | Playwright expect_download; non-zero, well-formed |
+| Round-trip: export → wipe test records → restore → identical data (archived module, log revision 1, review snapshot) | PASS | isolated TEST-S5 records; verified in the database |
+| Idempotency: second import of the same file writes nothing | PASS | UI reported "0 goals, 0 routines, 0 check-ins and 0 reviews" |
+| Foreign-account backup rejected; malformed file rejected before sending | PASS | crafted foreign user_id file; invalid JSON file |
+| Explicit confirmation required before restore | PASS | restore button disabled until the checkbox is checked |
+| Zero partial writes on failure | PASS (by construction) | single transactional SQL function; any invalid row rolls back |
+| Cross-account restore with two live accounts | NOT RUN | only one account exists in this workspace; rejection verified with a crafted foreign-id file |
+| Test records removed afterwards | PASS | TEST-S5 rows deleted; review draft removed |
+
 ## Later stages
-Backup and remaining browser tests in spec §17: NOT RUN (not yet built).
+Remaining browser tests in spec §17: NOT RUN (Stage 6).

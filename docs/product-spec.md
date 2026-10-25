@@ -27,5 +27,5 @@ AI coaching, payments, teams or social features, streak penalties, badges, notif
 - [x] Stage 2: goals and modules, archive, calculation helpers
 - [x] Stage 3: daily logging, This week, goal metrics
 - [x] Stage 4: history, weekly reviews, snapshots
-- [ ] Stage 5: export and restore
+- [x] Stage 5: export and restore
 - [ ] Stage 6: audit, browser tests, launch

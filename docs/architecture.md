@@ -36,6 +36,7 @@
   - `set_updated_at`: maintains audit timestamps.
 - Profile bootstrap: a security-definer trigger on `auth.users` inserts a profile row with timezone UTC and `timezone_confirmed = false`. The app then requires confirmation.
 - Derived values (targets, ratios, consistency) are never stored as editable columns.
+- Backup & recovery: `src/lib/backup/` builds a complete account export (JSON + per-entity CSV with formula-injection protection; paginated reads past the 1000-row default; archived rows and review snapshots included; no auth secrets). Restore is the security-definer `restore_account_backup(jsonb)`: same-account only (rejects foreign `user_id`), forces `user_id = auth.uid()`, merges by primary/natural keys with `IS DISTINCT FROM` guards (idempotent re-imports write nothing), sets `app.snapshot_write` for review snapshots, and rolls back entirely on any invalid row. No replace-all path exists.
 
 ## Theme
 - The preference is saved in `profiles.theme`. A pre-paint inline script reads the cached hint (`localStorage["shq-theme"]`) to avoid a flash on load. No user data is stored in localStorage.

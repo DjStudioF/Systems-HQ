@@ -249,6 +249,7 @@ export type Database = {
     }
     Functions: {
       is_valid_timezone: { Args: { tz: string }; Returns: boolean }
+      restore_account_backup: { Args: { p_backup: Json }; Returns: Json }
       start_weekly_review: {
         Args: { p_timezone: string; p_week_start: string }
         Returns: {
