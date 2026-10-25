@@ -34,7 +34,7 @@ import { formatIsoDate, localToday } from "@/lib/date/local-date";
 import { DAY_LABELS, type ModuleFormValues } from "@/lib/validation/goal";
 
 export const Route = createFileRoute("/_authenticated/goals/$goalId")({
-  validateSearch: (s: Record<string, unknown>) => ({ first: s.first === true }),
+  validateSearch: (s: Record<string, unknown>) => ({ first: s["first"] === true }),
   head: () => ({
     meta: [
       { title: "Goal · Systems HQ" },

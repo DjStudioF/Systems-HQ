@@ -26,7 +26,7 @@ function NewGoalPage() {
   const navigate = useNavigate();
 
   const create = useMutation({
-    mutationFn: createGoal.bind(null, user.id),
+    mutationFn: (v: Parameters<typeof createGoal>[1]) => createGoal(user.id, v),
     onSuccess: (goal) => {
       qc.invalidateQueries({ queryKey: goalKeys.list(user.id) });
       toast.success("Goal created — now add your first routine.");

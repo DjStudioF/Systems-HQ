@@ -3,10 +3,16 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables, TablesInsert } from "@/integrations/supabase/types";
 import {
   goalFormSchema,
+  goalUpdateSchema,
   moduleFormSchema,
   type GoalFormValues,
   type ModuleFormValues,
 } from "@/lib/validation/goal";
+
+/** Drops undefined keys so partial updates satisfy exactOptionalPropertyTypes. */
+function defined<T extends Record<string, unknown>>(obj: T): Partial<T> {
+  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as Partial<T>;
+}
 
 export type Goal = Tables<"goals">;
 export type Module = Tables<"modules">;
@@ -69,7 +75,7 @@ export async function updateGoal(
   goalId: string,
   values: Partial<GoalFormValues>,
 ): Promise<Goal> {
-  const parsed = goalFormSchema.partial().parse(values);
+  const parsed = defined(goalUpdateSchema.parse(values));
   const { data, error } = await supabase
     .from("goals")
     .update(parsed)
@@ -132,7 +138,7 @@ export async function updateModule(
   moduleId: string,
   values: Partial<ModuleFormValues>,
 ): Promise<Module> {
-  const parsed = moduleFormSchema.partial().parse(values);
+  const parsed = defined(moduleFormSchema.partial().parse(values));
   const { data, error } = await supabase
     .from("modules")
     .update(parsed)

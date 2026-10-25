@@ -20,19 +20,25 @@ export const daysSchema = z
   .refine((d) => new Set(d).size === d.length, "Each day can only be selected once.")
   .transform((d) => [...d].sort((a, b) => a - b));
 
-export const goalFormSchema = z
-  .object({
+export const goalFormBase = z.object({
     name: z.string().trim().min(1, "Give the goal a name.").max(GOAL_NAME_MAX),
     why: z.string().trim().max(WHY_MAX).default(""),
     mode: z.enum(["focus", "maintain"]),
     start_date: isoDate,
     deadline: isoDate.nullable(),
     outcome_notes: z.string().trim().max(OUTCOME_MAX).default(""),
-  })
-  .refine((g) => !g.deadline || g.deadline >= g.start_date, {
+  });
+
+export const goalFormSchema = goalFormBase.refine(
+  (g) => !g.deadline || g.deadline >= g.start_date,
+  {
     message: "Deadline can't be before the start date.",
     path: ["deadline"],
-  });
+  },
+);
+
+/** Partial updates skip the cross-field deadline check; the DB constraint still enforces it. */
+export const goalUpdateSchema = goalFormBase.partial();
 
 export const moduleFormSchema = z.object({
   name: z.string().trim().min(1, "Give the routine a name.").max(MODULE_NAME_MAX),

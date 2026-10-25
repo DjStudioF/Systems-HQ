@@ -16,6 +16,7 @@ export function GoalCard({ goal, today }: { goal: GoalWithModules; today: IsoDat
     <Link
       to="/goals/$goalId"
       params={{ goalId: goal.id }}
+      search={{ first: false }}
       className="surface block space-y-3 p-4 transition-colors hover:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="flex items-baseline justify-between gap-3">
