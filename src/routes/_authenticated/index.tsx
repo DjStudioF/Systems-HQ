@@ -63,6 +63,7 @@ function useLocalToday(tz: string) {
 function Dashboard() {
   const { user } = Route.useRouteContext();
   const { data: profile } = useQuery(profileQuery(user.id));
+  const { data: goals } = useQuery(goalsQuery(user.id));
   const tz = profile?.timezone ?? "UTC";
   const today = useLocalToday(tz);
   const mon = weekStart(today);
@@ -92,8 +93,10 @@ function Dashboard() {
 
       <div className="mt-8 space-y-12">
         <Section id="today" title="Today" meta="0 of 0 checked in">
-          <EmptyState title="Create your first goal and routine.">
-            Goal and routine setup arrives in the next build stage. Nothing has been added for you.
+          <EmptyState title="Daily check-ins arrive in the next build stage.">
+            {hasGoals
+              ? "Your routines will appear here for one-tap check-ins."
+              : "Create a goal and routine first — nothing has been added for you."}
           </EmptyState>
         </Section>
 
@@ -108,9 +111,29 @@ function Dashboard() {
         </Section>
 
         <Section id="goals" title="Goals">
-          <EmptyState title="No goals yet.">
-            Goals you create will show weekly consistency and time elapsed here.
-          </EmptyState>
+          {activeGoals.length === 0 ? (
+            <EmptyState title="No goals yet.">
+              <Link
+                to="/goals/new"
+                className="font-medium text-primary underline-offset-4 hover:underline"
+              >
+                Create your first goal
+              </Link>{" "}
+              and the routines that serve it.
+            </EmptyState>
+          ) : (
+            <div className="space-y-4">
+              {activeGoals.map((g) => (
+                <GoalCard key={g.id} goal={g} today={today} />
+              ))}
+              <Link
+                to="/goals"
+                className="inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+              >
+                View all goals
+              </Link>
+            </div>
+          )}
         </Section>
 
         <Section id="review" title="Weekly review">
