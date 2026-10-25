@@ -136,7 +136,10 @@ export async function deliverFile(blob: Blob, filename: string) {
   downloadBlob(blob, filename);
 }
 
-const CSV_COLUMNS: Record<string, { key: string; label: string }[]> = {
+const CSV_COLUMNS: Record<
+  "goals" | "modules" | "logs" | "weekly_reviews",
+  { key: string; label: string }[]
+> = {
   goals: [
     { key: "id", label: "id" },
     { key: "name", label: "name" },
