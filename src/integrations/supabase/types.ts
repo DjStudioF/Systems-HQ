@@ -14,16 +14,249 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      goals: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          id: string
+          lifecycle: Database["public"]["Enums"]["goal_lifecycle"]
+          mode: Database["public"]["Enums"]["goal_mode"]
+          name: string
+          outcome_notes: string
+          sort_order: number
+          start_date: string
+          updated_at: string
+          user_id: string
+          why: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          lifecycle?: Database["public"]["Enums"]["goal_lifecycle"]
+          mode?: Database["public"]["Enums"]["goal_mode"]
+          name: string
+          outcome_notes?: string
+          sort_order?: number
+          start_date: string
+          updated_at?: string
+          user_id?: string
+          why?: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          lifecycle?: Database["public"]["Enums"]["goal_lifecycle"]
+          mode?: Database["public"]["Enums"]["goal_mode"]
+          name?: string
+          outcome_notes?: string
+          sort_order?: number
+          start_date?: string
+          updated_at?: string
+          user_id?: string
+          why?: string
+        }
+        Relationships: []
+      }
+      logs: {
+        Row: {
+          created_at: string
+          id: string
+          log_date: string
+          module_id: string
+          revision: number
+          status: Database["public"]["Enums"]["log_status"]
+          timezone_at_entry: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          log_date: string
+          module_id: string
+          revision?: number
+          status: Database["public"]["Enums"]["log_status"]
+          timezone_at_entry: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          log_date?: string
+          module_id?: string
+          revision?: number
+          status?: Database["public"]["Enums"]["log_status"]
+          timezone_at_entry?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logs_module_owner_fk"
+            columns: ["module_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      modules: {
+        Row: {
+          action: string
+          archived_at: string | null
+          created_at: string
+          days: number[]
+          goal_id: string
+          id: string
+          minimum: string
+          name: string
+          sort_order: number
+          trigger: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          archived_at?: string | null
+          created_at?: string
+          days?: number[]
+          goal_id: string
+          id?: string
+          minimum: string
+          name: string
+          sort_order?: number
+          trigger?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          action?: string
+          archived_at?: string | null
+          created_at?: string
+          days?: number[]
+          goal_id?: string
+          id?: string
+          minimum?: string
+          name?: string
+          sort_order?: number
+          trigger?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "modules_goal_owner_fk"
+            columns: ["goal_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          consistency_threshold: number
+          created_at: string
+          display_name: string | null
+          id: string
+          motto: string
+          theme: Database["public"]["Enums"]["theme_pref"]
+          timezone: string
+          timezone_confirmed: boolean
+          updated_at: string
+        }
+        Insert: {
+          consistency_threshold?: number
+          created_at?: string
+          display_name?: string | null
+          id: string
+          motto?: string
+          theme?: Database["public"]["Enums"]["theme_pref"]
+          timezone?: string
+          timezone_confirmed?: boolean
+          updated_at?: string
+        }
+        Update: {
+          consistency_threshold?: number
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          motto?: string
+          theme?: Database["public"]["Enums"]["theme_pref"]
+          timezone?: string
+          timezone_confirmed?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      weekly_reviews: {
+        Row: {
+          created_at: string
+          id: string
+          keep_tweak_drop: string
+          metrics_snapshot: Json | null
+          next_week_focus: string
+          skipped_and_why: string
+          snapshot_captured_at: string | null
+          snapshot_timezone: string | null
+          state: Database["public"]["Enums"]["review_state"]
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+          week_start: string
+          wins: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keep_tweak_drop?: string
+          metrics_snapshot?: Json | null
+          next_week_focus?: string
+          skipped_and_why?: string
+          snapshot_captured_at?: string | null
+          snapshot_timezone?: string | null
+          state?: Database["public"]["Enums"]["review_state"]
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+          week_start: string
+          wins?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keep_tweak_drop?: string
+          metrics_snapshot?: Json | null
+          next_week_focus?: string
+          skipped_and_why?: string
+          snapshot_captured_at?: string | null
+          snapshot_timezone?: string | null
+          state?: Database["public"]["Enums"]["review_state"]
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+          wins?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_valid_timezone: { Args: { tz: string }; Returns: boolean }
+      valid_days: { Args: { d: number[] }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      goal_lifecycle: "active" | "completed" | "archived"
+      goal_mode: "focus" | "maintain"
+      log_status: "done" | "minimum" | "skipped"
+      review_state: "draft" | "submitted"
+      theme_pref: "system" | "light" | "dark"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +383,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      goal_lifecycle: ["active", "completed", "archived"],
+      goal_mode: ["focus", "maintain"],
+      log_status: ["done", "minimum", "skipped"],
+      review_state: ["draft", "submitted"],
+      theme_pref: ["system", "light", "dark"],
+    },
   },
 } as const
