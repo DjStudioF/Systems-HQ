@@ -18,7 +18,9 @@ import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as DevDesignRouteImport } from './routes/dev.design'
+import { Route as AuthenticatedGoalsGoalIdRouteImport } from './routes/_authenticated/goals.$goalId'
 import { Route as AuthenticatedGoalsNewRouteImport } from './routes/_authenticated/goals.new'
+import { Route as AuthenticatedGoalsGoalIdEditRouteImport } from './routes/_authenticated/goals.$goalId_.edit'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -64,11 +66,23 @@ const DevDesignRoute = DevDesignRouteImport.update({
   path: '/dev/design',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedGoalsGoalIdRoute =
+  AuthenticatedGoalsGoalIdRouteImport.update({
+    id: '/$goalId',
+    path: '/$goalId',
+    getParentRoute: () => AuthenticatedGoalsRoute,
+  } as any)
 const AuthenticatedGoalsNewRoute = AuthenticatedGoalsNewRouteImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => AuthenticatedGoalsRoute,
 } as any)
+const AuthenticatedGoalsGoalIdEditRoute =
+  AuthenticatedGoalsGoalIdEditRouteImport.update({
+    id: '/$goalId_/edit',
+    path: '/$goalId/edit',
+    getParentRoute: () => AuthenticatedGoalsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -79,7 +93,9 @@ export interface FileRoutesByFullPath {
   '/history': typeof AuthenticatedHistoryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
+  '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
+  '/goals/$goalId/edit': typeof AuthenticatedGoalsGoalIdEditRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
@@ -90,7 +106,9 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/': typeof AuthenticatedIndexRoute
+  '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
+  '/goals/$goalId/edit': typeof AuthenticatedGoalsGoalIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,7 +121,9 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/_authenticated/goals/new': typeof AuthenticatedGoalsNewRoute
+  '/_authenticated/goals/$goalId_/edit': typeof AuthenticatedGoalsGoalIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,7 +136,9 @@ export interface FileRouteTypes {
     | '/history'
     | '/settings'
     | '/dev/design'
+    | '/goals/$goalId'
     | '/goals/new'
+    | '/goals/$goalId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -127,7 +149,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/dev/design'
     | '/'
+    | '/goals/$goalId'
     | '/goals/new'
+    | '/goals/$goalId/edit'
   id:
     | '__root__'
     | '/_authenticated'
@@ -139,7 +163,9 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/dev/design'
     | '/_authenticated/'
+    | '/_authenticated/goals/$goalId'
     | '/_authenticated/goals/new'
+    | '/_authenticated/goals/$goalId_/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -215,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevDesignRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/goals/$goalId': {
+      id: '/_authenticated/goals/$goalId'
+      path: '/$goalId'
+      fullPath: '/goals/$goalId'
+      preLoaderRoute: typeof AuthenticatedGoalsGoalIdRouteImport
+      parentRoute: typeof AuthenticatedGoalsRoute
+    }
     '/_authenticated/goals/new': {
       id: '/_authenticated/goals/new'
       path: '/new'
@@ -222,15 +255,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGoalsNewRouteImport
       parentRoute: typeof AuthenticatedGoalsRoute
     }
+    '/_authenticated/goals/$goalId_/edit': {
+      id: '/_authenticated/goals/$goalId_/edit'
+      path: '/$goalId/edit'
+      fullPath: '/goals/$goalId/edit'
+      preLoaderRoute: typeof AuthenticatedGoalsGoalIdEditRouteImport
+      parentRoute: typeof AuthenticatedGoalsRoute
+    }
   }
 }
 
 interface AuthenticatedGoalsRouteChildren {
+  AuthenticatedGoalsGoalIdRoute: typeof AuthenticatedGoalsGoalIdRoute
   AuthenticatedGoalsNewRoute: typeof AuthenticatedGoalsNewRoute
+  AuthenticatedGoalsGoalIdEditRoute: typeof AuthenticatedGoalsGoalIdEditRoute
 }
 
 const AuthenticatedGoalsRouteChildren: AuthenticatedGoalsRouteChildren = {
+  AuthenticatedGoalsGoalIdRoute: AuthenticatedGoalsGoalIdRoute,
   AuthenticatedGoalsNewRoute: AuthenticatedGoalsNewRoute,
+  AuthenticatedGoalsGoalIdEditRoute: AuthenticatedGoalsGoalIdEditRoute,
 }
 
 const AuthenticatedGoalsRouteWithChildren =

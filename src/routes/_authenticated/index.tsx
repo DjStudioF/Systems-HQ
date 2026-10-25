@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
+import { GoalCard } from "@/components/app/GoalCard";
 import { MottoEditor } from "@/components/app/MottoEditor";
 import {
   Accordion,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { profileQuery } from "@/lib/services/profile";
+import { goalsQuery } from "@/lib/services/goals";
 import { addDays, formatIsoDate, localToday, weekStart } from "@/lib/date/local-date";
 
 export const Route = createFileRoute("/_authenticated/")({
