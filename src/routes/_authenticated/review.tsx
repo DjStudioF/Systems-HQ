@@ -96,8 +96,7 @@ function ReviewPage() {
   }, [review, fields]);
 
   const submitted = review?.state === "submitted";
-  const dirty =
-    !!fields && !!review && PROMPTS.some((p) => fields[p.key] !== review[p.key]);
+  const dirty = !!fields && !!review && PROMPTS.some((p) => fields[p.key] !== review[p.key]);
 
   const blocker = useBlocker({
     shouldBlockFn: () => dirty,
@@ -184,9 +183,7 @@ function ReviewPage() {
                   placeholder={p.hint}
                   value={fields?.[p.key] ?? ""}
                   disabled={submitted}
-                  onChange={(e) =>
-                    setFields((f) => (f ? { ...f, [p.key]: e.target.value } : f))
-                  }
+                  onChange={(e) => setFields((f) => (f ? { ...f, [p.key]: e.target.value } : f))}
                 />
               </div>
             ))}
@@ -251,7 +248,10 @@ function ReviewPage() {
         </section>
       </div>
 
-      <AlertDialog open={blocker.status === "blocked"} onOpenChange={(open) => !open && blocker.reset?.()}>
+      <AlertDialog
+        open={blocker.status === "blocked"}
+        onOpenChange={(open) => !open && blocker.reset?.()}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Leave without saving?</AlertDialogTitle>

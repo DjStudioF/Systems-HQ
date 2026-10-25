@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WifiOff } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
@@ -53,7 +53,6 @@ const HOW_IT_WORKS = [
   "Weekly consistency measures follow-through; time elapsed does not measure goal completion.",
   "Review weekly and keep, tweak, or drop what is not working.",
 ];
-
 
 /** Tracks connectivity so the dashboard can switch to read-only when offline. */
 function useOnline() {

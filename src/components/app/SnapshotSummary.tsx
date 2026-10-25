@@ -9,8 +9,8 @@ export function SnapshotSummary({ snapshot }: { snapshot: MetricsSnapshot | null
   if (!snapshot) {
     return (
       <p className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
-        No metrics snapshot was captured for this week, and it can't be reconstructed from
-        today's schedules.
+        No metrics snapshot was captured for this week, and it can't be reconstructed from today's
+        schedules.
       </p>
     );
   }
@@ -45,7 +45,9 @@ export function SnapshotSummary({ snapshot }: { snapshot: MetricsSnapshot | null
           </li>
         ))}
         {snapshot.goals.length === 0 && (
-          <p className="text-sm text-muted-foreground">No active goals when this snapshot was taken.</p>
+          <p className="text-sm text-muted-foreground">
+            No active goals when this snapshot was taken.
+          </p>
         )}
       </ul>
     </div>
