@@ -9,11 +9,12 @@
 
 ## Layout
 - `src/lib/date/`: pure calendar helpers with an injected clock (`localToday(tz, now)`). Dates are `YYYY-MM-DD` strings and are never parsed as UTC instants for display.
+- `src/lib/calc/`: pure derived-metric functions (module target/ratio, unweighted goal consistency, time elapsed). All take dates as arguments; none are stored in the database.
 - `src/lib/validation/`: shared Zod schemas.
 - `src/lib/services/`: data access. Query keys always start with `["account", userId, ...]`.
 - `src/lib/auth/`: sign-out teardown and redirect sanitising.
 - `src/components/app/`: app components. `src/components/ui/` holds the primitives, including the logging button variants.
-- `src/routes/_authenticated/`: protected pages (`/`, `/settings`, `/history`). These are client-only (`ssr: false`).
+- `src/routes/_authenticated/`: protected pages (`/`, `/goals` + `/goals/new` + `/goals/$goalId` + edit, `/settings`, `/history`). These are client-only (`ssr: false`). A route file that gains dot-nested children must either render `<Outlet />` or be renamed to `*.index.tsx` — `goals.index.tsx` is the list leaf for that reason.
 - Public pages: `/login`, `/forgot-password` and `/reset-password`. `/dev/design` exists only in development (it returns not-found when `import.meta.env.DEV` is false).
 
 ## Auth and privacy

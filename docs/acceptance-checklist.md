@@ -21,5 +21,16 @@ Status values: PASS / FAIL / NOT RUN. Updated at the end of each stage.
 | Password reset email delivery | NOT RUN | needs a real inbox |
 | No privileged secrets in client bundle | PASS | No service-role use in app code; security scan clean |
 
+## Stage 2
+| Check | Status | Notes |
+|---|---|---|
+| Unit: full-week target, ratio cap, no-schedule => null, unweighted consistency, unrounded 0.8 threshold, clamped time elapsed | PASS | vitest, 10 new tests in src/lib/calc/consistency.test.ts |
+| Typecheck (tsgo) | PASS | |
+| Lint (eslint) | PASS | 0 errors; 7 pre-existing warnings in the shadcn ui kit |
+| Browser: create goal + routine (onboarding prompt), edit, reload persistence | PASS | signed-in preview run; data intact after reload |
+| Browser: archive/restore routine, archive/restore goal (routines follow the goal) | PASS | screenshots in the test run |
+| Test records removed afterwards | PASS | account back to 0 goals / 0 routines |
+| Validation: deadline before start rejected, blank names rejected, days unique+sorted 1–7 | PASS | Zod schemas + DB constraints (23514/23503 mapped to friendly errors) |
+
 ## Later stages
 All calculation, mutation, review, backup and browser tests in spec §17: NOT RUN (not yet built).
