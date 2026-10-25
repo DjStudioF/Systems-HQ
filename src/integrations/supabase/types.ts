@@ -249,6 +249,56 @@ export type Database = {
     }
     Functions: {
       is_valid_timezone: { Args: { tz: string }; Returns: boolean }
+      start_weekly_review: {
+        Args: { p_timezone: string; p_week_start: string }
+        Returns: {
+          created_at: string
+          id: string
+          keep_tweak_drop: string
+          metrics_snapshot: Json | null
+          next_week_focus: string
+          skipped_and_why: string
+          snapshot_captured_at: string | null
+          snapshot_timezone: string | null
+          state: Database["public"]["Enums"]["review_state"]
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+          week_start: string
+          wins: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "weekly_reviews"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_weekly_review: {
+        Args: { p_week_start: string }
+        Returns: {
+          created_at: string
+          id: string
+          keep_tweak_drop: string
+          metrics_snapshot: Json | null
+          next_week_focus: string
+          skipped_and_why: string
+          snapshot_captured_at: string | null
+          snapshot_timezone: string | null
+          state: Database["public"]["Enums"]["review_state"]
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+          week_start: string
+          wins: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "weekly_reviews"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       valid_days: { Args: { d: number[] }; Returns: boolean }
     }
     Enums: {

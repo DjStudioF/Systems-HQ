@@ -15,6 +15,13 @@
       "when": 1792968416471,
       "tag": "0001_tighten_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792970366831,
+      "tag": "0002_weekly_review_functions",
+      "breakpoints": true
     }
   ]
 }
