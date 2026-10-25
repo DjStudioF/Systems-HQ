@@ -77,3 +77,12 @@ Status values: PASS / FAIL / NOT RUN. Updated at the end of each stage.
 
 ## Later stages
 Remaining browser tests in spec §17: NOT RUN (Stage 6).
+
+## Stage 6 (audit)
+| Check | Status | Notes |
+|---|---|---|
+| Typecheck, lint (whole repo), vitest 31 tests | PASS | generated files excluded from lint |
+| Anonymous access to all tables refused | PASS | 42501 on every table |
+| Owner A/B isolation | PASS (catalogue) | RLS + composite FKs inspected; only one live account exists |
+| Desktop/mobile, light/dark, keyboard, reduced motion, offline, signed-out redirect, reload | PASS | Playwright |
+| Dev-only route removed; TEST- records purged | PASS | 1 goal / 1 routine remain (user's own) |
