@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { PageContainer } from "@/components/app/AppShell";
+import { BackupSection } from "@/components/app/BackupSection";
 import { TimezonePicker } from "@/components/app/TimezonePicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -190,6 +191,8 @@ function SettingsForm({
           </Button>
         </div>
       </form>
+
+      <BackupSection userId={userId} />
 
       <div className="mt-10 max-w-xl border-t pt-6">
         <Button
