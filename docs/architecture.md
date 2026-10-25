@@ -15,7 +15,7 @@
 - `src/lib/auth/`: sign-out teardown and redirect sanitising.
 - `src/components/app/`: app components. `src/components/ui/` holds the primitives, including the logging button variants.
 - `src/routes/_authenticated/`: protected pages (`/`, `/goals` + `/goals/new` + `/goals/$goalId` + edit, `/settings`, `/history`). These are client-only (`ssr: false`). A route file that gains dot-nested children must either render `<Outlet />` or be renamed to `*.index.tsx` — `goals.index.tsx` is the list leaf for that reason.
-- Public pages: `/login`, `/forgot-password` and `/reset-password`. `/dev/design` exists only in development (it returns not-found when `import.meta.env.DEV` is false).
+- Public pages: `/login`, `/forgot-password` and `/reset-password`. There are no development-only routes.
 
 ## Auth and privacy
 - Email/password sign-in only. Public sign-up is disabled at the auth server, and there's no sign-up screen. Anonymous sign-in is disabled. The leaked-password check is on.

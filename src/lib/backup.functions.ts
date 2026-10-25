@@ -9,7 +9,7 @@ import type { Json } from "@/integrations/supabase/types";
  */
 export const restoreBackupFn = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { backup: unknown }) => input)
+  .validator((input: { backup: unknown }) => input)
   .handler(async ({ data, context }) => {
     const { data: result, error } = await context.supabase.rpc("restore_account_backup", {
       p_backup: data.backup as Json,
