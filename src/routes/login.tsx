@@ -44,8 +44,8 @@ function LoginPage() {
       setError(error.message === "Email not confirmed" ? "Confirm your email first, using the link you were sent." : "Email or password is incorrect.");
       return;
     }
-    if (isSafeRedirect(redirect)) window.history.replaceState(null, "", redirect);
-    navigate({ to: isSafeRedirect(redirect) ? redirect : "/", replace: true });
+    if (isSafeRedirect(redirect)) navigate({ href: redirect, replace: true });
+    else navigate({ to: "/", replace: true });
   }
 
   return (
