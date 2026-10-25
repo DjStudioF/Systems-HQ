@@ -195,5 +195,5 @@ export function backupCsv(
     ...r,
     days: Array.isArray(r["days"]) ? (r["days"] as unknown[]).join(" ") : r["days"],
   }));
-  return toCsv(rows, CSV_COLUMNS[entity]);
+  return toCsv(rows, CSV_COLUMNS[entity]!);
 }
