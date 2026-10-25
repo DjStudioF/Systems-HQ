@@ -15,7 +15,9 @@ export const restoreBackupFn = createServerFn({ method: "POST" })
     });
     if (error) {
       if (error.message.includes("different account")) {
-        throw new Error("This backup belongs to a different account. Restore is same-account only.");
+        throw new Error(
+          "This backup belongs to a different account. Restore is same-account only.",
+        );
       }
       throw new Error("Restore failed — nothing was written. Check the file and retry.");
     }

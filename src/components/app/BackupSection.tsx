@@ -81,17 +81,13 @@ export function BackupSection({ userId }: { userId: string }) {
         Backup & recovery
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Export everything — including archived goals and review snapshots — or restore a JSON
-        backup into this account. Restore merges; it never deletes anything.
+        Export everything — including archived goals and review snapshots — or restore a JSON backup
+        into this account. Restore merges; it never deletes anything.
       </p>
 
       <div className="mt-4 space-y-3">
         <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            disabled={exporting !== null}
-            onClick={() => doExport("json")}
-          >
+          <Button variant="outline" disabled={exporting !== null} onClick={() => doExport("json")}>
             {exporting === "json" ? "Preparing…" : "Download JSON backup"}
           </Button>
         </div>
@@ -169,8 +165,8 @@ export function BackupSection({ userId }: { userId: string }) {
                     checked={confirmed}
                     onChange={(e) => setConfirmed(e.target.checked)}
                   />
-                  I understand this merges the backup into my account. Existing records are
-                  updated where they differ; nothing is deleted.
+                  I understand this merges the backup into my account. Existing records are updated
+                  where they differ; nothing is deleted.
                 </label>
                 <div className="flex gap-2">
                   <Button
@@ -201,7 +197,10 @@ export function BackupSection({ userId }: { userId: string }) {
           />
         )}
         {restore.isSuccess && (
-          <p role="status" className="rounded-xl border border-primary/40 bg-primary-soft p-4 text-sm text-foreground">
+          <p
+            role="status"
+            className="rounded-xl border border-primary/40 bg-primary-soft p-4 text-sm text-foreground"
+          >
             Restore complete — {restore.data.goals} goals, {restore.data.modules} routines,{" "}
             {restore.data.logs} check-ins and {restore.data.reviews} reviews added or updated.
           </p>

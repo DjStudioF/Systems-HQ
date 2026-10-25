@@ -102,9 +102,7 @@ export function summarizeBackup(b: ParsedBackup, currentUserId: string): BackupP
   };
 }
 
-export type ParseResult =
-  | { ok: true; backup: ParsedBackup }
-  | { ok: false; message: string };
+export type ParseResult = { ok: true; backup: ParsedBackup } | { ok: false; message: string };
 
 export function parseBackupFile(text: string): ParseResult {
   let json: unknown;
