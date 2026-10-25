@@ -14,9 +14,11 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as DevDesignRouteImport } from './routes/dev.design'
+import { Route as AuthenticatedGoalsNewRouteImport } from './routes/_authenticated/goals.new'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -42,6 +44,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedGoalsRoute = AuthenticatedGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -57,24 +64,33 @@ const DevDesignRoute = DevDesignRouteImport.update({
   path: '/dev/design',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedGoalsNewRoute = AuthenticatedGoalsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AuthenticatedGoalsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/goals': typeof AuthenticatedGoalsRouteWithChildren
   '/history': typeof AuthenticatedHistoryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
+  '/goals/new': typeof AuthenticatedGoalsNewRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/goals': typeof AuthenticatedGoalsRouteWithChildren
   '/history': typeof AuthenticatedHistoryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/': typeof AuthenticatedIndexRoute
+  '/goals/new': typeof AuthenticatedGoalsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -82,10 +98,12 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/goals': typeof AuthenticatedGoalsRouteWithChildren
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/dev/design': typeof DevDesignRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/goals/new': typeof AuthenticatedGoalsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -94,28 +112,34 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/reset-password'
+    | '/goals'
     | '/history'
     | '/settings'
     | '/dev/design'
+    | '/goals/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
     | '/login'
     | '/reset-password'
+    | '/goals'
     | '/history'
     | '/settings'
     | '/dev/design'
     | '/'
+    | '/goals/new'
   id:
     | '__root__'
     | '/_authenticated'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
+    | '/_authenticated/goals'
     | '/_authenticated/history'
     | '/_authenticated/settings'
     | '/dev/design'
     | '/_authenticated/'
+    | '/_authenticated/goals/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -163,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/goals': {
+      id: '/_authenticated/goals'
+      path: '/goals'
+      fullPath: '/goals'
+      preLoaderRoute: typeof AuthenticatedGoalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/history': {
       id: '/_authenticated/history'
       path: '/history'
@@ -184,16 +215,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevDesignRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/goals/new': {
+      id: '/_authenticated/goals/new'
+      path: '/new'
+      fullPath: '/goals/new'
+      preLoaderRoute: typeof AuthenticatedGoalsNewRouteImport
+      parentRoute: typeof AuthenticatedGoalsRoute
+    }
   }
 }
 
+interface AuthenticatedGoalsRouteChildren {
+  AuthenticatedGoalsNewRoute: typeof AuthenticatedGoalsNewRoute
+}
+
+const AuthenticatedGoalsRouteChildren: AuthenticatedGoalsRouteChildren = {
+  AuthenticatedGoalsNewRoute: AuthenticatedGoalsNewRoute,
+}
+
+const AuthenticatedGoalsRouteWithChildren =
+  AuthenticatedGoalsRoute._addFileChildren(AuthenticatedGoalsRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRouteWithChildren
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedGoalsRoute: AuthenticatedGoalsRouteWithChildren,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
