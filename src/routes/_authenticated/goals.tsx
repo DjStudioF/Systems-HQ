@@ -29,7 +29,12 @@ function GoalsPage() {
   const [showArchived, setShowArchived] = useState(false);
   const today = localToday(profile?.timezone ?? "UTC", new Date());
 
-  if (goals.isPending) return <PageContainer><LoadingRows /></PageContainer>;
+  if (goals.isPending)
+    return (
+      <PageContainer>
+        <LoadingRows />
+      </PageContainer>
+    );
 
   const all = goals.data ?? [];
   const active = all.filter((g) => g.lifecycle !== "archived");
@@ -49,9 +54,12 @@ function GoalsPage() {
       <div className="mt-6 space-y-4">
         {active.length === 0 ? (
           <EmptyState title="No goals yet.">
-            A goal is something important to achieve or sustain. Routines are the repeatable
-            actions that serve it.{" "}
-            <Link to="/goals/new" className="font-medium text-primary underline-offset-4 hover:underline">
+            A goal is something important to achieve or sustain. Routines are the repeatable actions
+            that serve it.{" "}
+            <Link
+              to="/goals/new"
+              className="font-medium text-primary underline-offset-4 hover:underline"
+            >
               Create your first goal
             </Link>
             .

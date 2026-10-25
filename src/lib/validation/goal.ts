@@ -21,13 +21,13 @@ export const daysSchema = z
   .transform((d) => [...d].sort((a, b) => a - b));
 
 export const goalFormBase = z.object({
-    name: z.string().trim().min(1, "Give the goal a name.").max(GOAL_NAME_MAX),
-    why: z.string().trim().max(WHY_MAX).default(""),
-    mode: z.enum(["focus", "maintain"]),
-    start_date: isoDate,
-    deadline: isoDate.nullable(),
-    outcome_notes: z.string().trim().max(OUTCOME_MAX).default(""),
-  });
+  name: z.string().trim().min(1, "Give the goal a name.").max(GOAL_NAME_MAX),
+  why: z.string().trim().max(WHY_MAX).default(""),
+  mode: z.enum(["focus", "maintain"]),
+  start_date: isoDate,
+  deadline: isoDate.nullable(),
+  outcome_notes: z.string().trim().max(OUTCOME_MAX).default(""),
+});
 
 export const goalFormSchema = goalFormBase.refine(
   (g) => !g.deadline || g.deadline >= g.start_date,

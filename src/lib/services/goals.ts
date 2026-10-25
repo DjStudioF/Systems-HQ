@@ -25,7 +25,8 @@ export const goalKeys = {
 };
 
 function friendly(error: { code?: string; message?: string }): Error {
-  if (error.code === "23514") return new Error("That value isn't allowed. Check the form and retry.");
+  if (error.code === "23514")
+    return new Error("That value isn't allowed. Check the form and retry.");
   if (error.code === "23503") return new Error("That change would break a linked record.");
   return new Error("Couldn't save. Please try again.");
 }
@@ -56,11 +57,17 @@ export async function fetchGoal(userId: string, goalId: string): Promise<GoalWit
     .maybeSingle();
   if (error) throw new Error("Couldn't load this goal.");
   if (!data) throw new Error("This goal wasn't found.");
-  return { ...data, modules: [...(data.modules ?? [])].sort((a, b) => a.sort_order - b.sort_order) };
+  return {
+    ...data,
+    modules: [...(data.modules ?? [])].sort((a, b) => a.sort_order - b.sort_order),
+  };
 }
 
 export const goalQuery = (userId: string, goalId: string) =>
-  queryOptions({ queryKey: goalKeys.detail(userId, goalId), queryFn: () => fetchGoal(userId, goalId) });
+  queryOptions({
+    queryKey: goalKeys.detail(userId, goalId),
+    queryFn: () => fetchGoal(userId, goalId),
+  });
 
 export async function createGoal(userId: string, values: GoalFormValues): Promise<Goal> {
   const parsed = goalFormSchema.parse(values);

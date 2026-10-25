@@ -16,9 +16,7 @@ export function WeekdaySelector({
 }) {
   const toggle = (day: number) =>
     onChange(
-      value.includes(day)
-        ? value.filter((d) => d !== day)
-        : [...value, day].sort((a, b) => a - b),
+      value.includes(day) ? value.filter((d) => d !== day) : [...value, day].sort((a, b) => a - b),
     );
 
   return (

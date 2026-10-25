@@ -67,7 +67,11 @@ function GoalDetailPage() {
     onSuccess: (_d, l) => {
       refresh();
       toast.success(
-        l === "archived" ? "Goal archived" : l === "completed" ? "Goal marked complete" : "Goal restored",
+        l === "archived"
+          ? "Goal archived"
+          : l === "completed"
+            ? "Goal marked complete"
+            : "Goal restored",
       );
       if (l === "archived") navigate({ to: "/goals" });
     },
@@ -112,7 +116,8 @@ function GoalDetailPage() {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">{g.name}</h1>
           <p className="mt-1 text-sm capitalize text-muted-foreground">
-            {g.mode} · started {formatIsoDate(g.start_date, { month: "short", day: "numeric", year: "numeric" })}
+            {g.mode} · started{" "}
+            {formatIsoDate(g.start_date, { month: "short", day: "numeric", year: "numeric" })}
             {g.deadline &&
               ` · deadline ${formatIsoDate(g.deadline, { month: "short", day: "numeric", year: "numeric" })}`}
             {g.lifecycle !== "active" && ` · ${g.lifecycle}`}

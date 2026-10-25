@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  goalConsistency,
-  isOnTrack,
-  moduleRatio,
-  moduleTarget,
-  timeElapsed,
-} from "./consistency";
+import { goalConsistency, isOnTrack, moduleRatio, moduleTarget, timeElapsed } from "./consistency";
 
 describe("moduleTarget", () => {
   it("is the count of selected days, never prorated", () => {
