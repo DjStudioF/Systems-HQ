@@ -93,8 +93,8 @@ function HistoryPage() {
 
   return (
     <PageContainer>
-      <header className="border-b pb-6">
-        <h1 className="text-3xl font-semibold tracking-tight">History</h1>
+      <header>
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">History</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Every check-in, newest first. Correct a status or clear an entry any time — edits are
           counted, originals keep their entry timezone.
@@ -103,14 +103,14 @@ function HistoryPage() {
 
       <HistoryOverview userId={user.id} today={today} />
 
-      <div className="mt-6 flex flex-wrap items-end gap-4">
+      <div className="mt-8 grid gap-4 sm:flex sm:flex-wrap sm:items-end">
         <div className="space-y-1.5">
           <Label htmlFor="f-goal">Goal</Label>
           <Select
             value={filters.goal || "all"}
             onValueChange={(v) => setFilter({ goal: v === "all" ? "" : v, module: "" })}
           >
-            <SelectTrigger id="f-goal" className="w-48">
+            <SelectTrigger id="f-goal" className="w-full sm:w-48">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -129,7 +129,7 @@ function HistoryPage() {
             value={filters.module || "all"}
             onValueChange={(v) => setFilter({ module: v === "all" ? "" : v })}
           >
-            <SelectTrigger id="f-module" className="w-48">
+            <SelectTrigger id="f-module" className="w-full sm:w-48">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -148,7 +148,7 @@ function HistoryPage() {
             value={filters.status || "all"}
             onValueChange={(v) => setFilter({ status: v === "all" ? "" : v })}
           >
-            <SelectTrigger id="f-status" className="w-40">
+            <SelectTrigger id="f-status" className="w-full sm:w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

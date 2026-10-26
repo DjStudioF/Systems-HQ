@@ -93,8 +93,8 @@ function WeekPage() {
 
   return (
     <PageContainer>
-      <header className="mb-5 flex items-baseline justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">This week</h1>
+      <header className="mb-6 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">This week</h1>
         <p className="num text-sm text-muted-foreground">
           {formatIsoDate(mon, fmt)} – {formatIsoDate(sun, fmt)}
         </p>
@@ -111,7 +111,7 @@ function WeekPage() {
           — weekly progress appears here.
         </EmptyState>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           <section
             aria-label="Week summary"
             className="grid grid-cols-3 divide-x rounded-xl border bg-surface-1 text-sm"

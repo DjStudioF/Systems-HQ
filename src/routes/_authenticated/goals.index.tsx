@@ -72,8 +72,8 @@ function GoalsPage() {
 
   return (
     <PageContainer>
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight">Goals</h1>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Goals</h1>
         <Button asChild>
           <Link to="/goals/new">
             <Plus /> New goal

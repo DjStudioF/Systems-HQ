@@ -140,7 +140,7 @@ function ReviewPage() {
           {formatIsoDate(mon, { month: "short", day: "numeric" })} –{" "}
           {formatIsoDate(sun, { month: "short", day: "numeric" })}
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight">Weekly review</h1>
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Weekly review</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {submitted
             ? `Submitted ${formatIsoDate(review.submitted_at!.slice(0, 10))}.`
