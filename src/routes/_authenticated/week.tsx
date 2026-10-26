@@ -267,7 +267,14 @@ function MobileRow({
   threshold: number;
 }) {
   const m = row.module;
-  const { week, target, successes, status, slipping } = useRowStats(row, logs, mon, today, weeks, threshold);
+  const { week, target, successes, status, slipping } = useRowStats(
+    row,
+    logs,
+    mon,
+    today,
+    weeks,
+    threshold,
+  );
   return (
     <li className="space-y-2 px-4 py-3">
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
@@ -275,7 +282,12 @@ function MobileRow({
           <span className="block truncate font-medium leading-tight">{m.name}</span>
           <span className="block truncate text-xs text-muted-foreground">{row.goalName}</span>
         </p>
-        <span className={cn("inline-flex h-6 shrink-0 items-center rounded-full border px-2 text-xs font-medium", CHIP[status].cls)}>
+        <span
+          className={cn(
+            "inline-flex h-6 shrink-0 items-center rounded-full border px-2 text-xs font-medium",
+            CHIP[status].cls,
+          )}
+        >
           {CHIP[status].label}
         </span>
       </div>
@@ -284,7 +296,10 @@ function MobileRow({
           {DAYS.map((d, i) => {
             const date = addDays(mon, i);
             return (
-              <span key={i} className="flex flex-col items-center gap-1 text-[10px] text-muted-foreground">
+              <span
+                key={i}
+                className="flex flex-col items-center gap-1 text-[10px] text-muted-foreground"
+              >
                 <Cell
                   date={date}
                   today={today}
@@ -329,7 +344,14 @@ function WeekRow({
   onToggle: () => void;
 }) {
   const { module: m } = row;
-  const { week, target, successes, ratio, status, trend, slipping } = useRowStats(row, logs, mon, today, weeks, threshold);
+  const { week, target, successes, ratio, status, trend, slipping } = useRowStats(
+    row,
+    logs,
+    mon,
+    today,
+    weeks,
+    threshold,
+  );
 
   return (
     <Fragment>

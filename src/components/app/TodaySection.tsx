@@ -283,7 +283,10 @@ const CheckInCard = memo(function CheckInCard({
           {goalName}
         </Link>
         {module.trigger && (
-          <p className="line-clamp-2 basis-full text-xs text-muted-foreground" title={module.trigger}>
+          <p
+            className="line-clamp-2 basis-full text-xs text-muted-foreground"
+            title={module.trigger}
+          >
             After: {module.trigger}
           </p>
         )}
@@ -294,7 +297,7 @@ const CheckInCard = memo(function CheckInCard({
           type="button"
           disabled={disabled}
           onClick={() => onReopen(module)}
-          className="tap -mb-1 flex items-center gap-2 self-start rounded-lg text-xs text-muted-foreground hover:text-foreground"
+          className="tap -mb-1 flex animate-in items-center gap-2 self-start fade-in duration-200 rounded-lg text-xs text-muted-foreground hover:text-foreground"
           aria-label={`${LABEL[status]}. Undo check-in`}
           title="Click to undo"
         >
@@ -332,7 +335,6 @@ const CheckInCard = memo(function CheckInCard({
             variant="ghost"
             className="h-12 min-w-0 flex-1 px-2 text-sm text-muted-foreground"
             disabled={disabled}
-            aria-label="Skipped"
             onClick={() => onMark(module, "skipped")}
           >
             {saving?.kind === "set" && saving.status === "skipped" ? (
@@ -347,7 +349,11 @@ const CheckInCard = memo(function CheckInCard({
       {error && (
         <p role="alert" className="flex items-center gap-2 text-xs text-state-below">
           Not saved.
-          <button type="button" className="font-medium underline underline-offset-4" onClick={onRetry}>
+          <button
+            type="button"
+            className="font-medium underline underline-offset-4"
+            onClick={onRetry}
+          >
             Retry
           </button>
         </p>
