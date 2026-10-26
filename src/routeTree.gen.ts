@@ -17,6 +17,7 @@ import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedReviewRouteImport } from './routes/_authenticated/review'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedWeekRouteImport } from './routes/_authenticated/week'
 import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authenticated/goals.index'
 import { Route as AuthenticatedGoalsGoalIdRouteImport } from './routes/_authenticated/goals.$goalId'
 import { Route as AuthenticatedGoalsNewRouteImport } from './routes/_authenticated/goals.new'
@@ -61,6 +62,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedWeekRoute = AuthenticatedWeekRouteImport.update({
+  id: '/week',
+  path: '/week',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedGoalsIndexRoute = AuthenticatedGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/history': typeof AuthenticatedHistoryRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/week': typeof AuthenticatedWeekRoute
   '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
   '/goals/': typeof AuthenticatedGoalsIndexRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/history': typeof AuthenticatedHistoryRoute
   '/review': typeof AuthenticatedReviewRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/week': typeof AuthenticatedWeekRoute
   '/': typeof AuthenticatedIndexRoute
   '/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/goals/new': typeof AuthenticatedGoalsNewRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/review': typeof AuthenticatedReviewRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/week': typeof AuthenticatedWeekRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/goals/$goalId': typeof AuthenticatedGoalsGoalIdRoute
   '/_authenticated/goals/new': typeof AuthenticatedGoalsNewRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/review'
     | '/settings'
+    | '/week'
     | '/goals/$goalId'
     | '/goals/new'
     | '/goals/'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/review'
     | '/settings'
+    | '/week'
     | '/'
     | '/goals/$goalId'
     | '/goals/new'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_authenticated/history'
     | '/_authenticated/review'
     | '/_authenticated/settings'
+    | '/_authenticated/week'
     | '/_authenticated/'
     | '/_authenticated/goals/$goalId'
     | '/_authenticated/goals/new'
@@ -233,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/week': {
+      id: '/_authenticated/week'
+      path: '/week'
+      fullPath: '/week'
+      preLoaderRoute: typeof AuthenticatedWeekRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/goals/': {
       id: '/_authenticated/goals/'
       path: '/goals'
@@ -268,6 +287,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedReviewRoute: typeof AuthenticatedReviewRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedWeekRoute: typeof AuthenticatedWeekRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedGoalsGoalIdRoute: typeof AuthenticatedGoalsGoalIdRoute
   AuthenticatedGoalsNewRoute: typeof AuthenticatedGoalsNewRoute
@@ -279,6 +299,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedReviewRoute: AuthenticatedReviewRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedWeekRoute: AuthenticatedWeekRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedGoalsGoalIdRoute: AuthenticatedGoalsGoalIdRoute,
   AuthenticatedGoalsNewRoute: AuthenticatedGoalsNewRoute,

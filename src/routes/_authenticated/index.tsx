@@ -27,7 +27,7 @@ export const Route = createFileRoute("/_authenticated/")({
 });
 
 /** Tracks connectivity so check-ins switch to read-only when offline. */
-export function useOnline() {
+function useOnline() {
   const [online, setOnline] = useState(() => navigator.onLine);
   useEffect(() => {
     const on = () => setOnline(true);

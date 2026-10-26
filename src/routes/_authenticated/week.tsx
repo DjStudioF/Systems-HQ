@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState, LoadingRows } from "@/components/app/States";
+import { InfoTip } from "@/components/app/viz";
 import { GoalWeekGroup } from "@/components/app/GoalWeekGroup";
 import { profileQuery } from "@/lib/services/profile";
 import { goalsQuery } from "@/lib/services/goals";
@@ -52,6 +53,12 @@ function WeekPage() {
           {formatIsoDate(mon, fmt)} – {formatIsoDate(addDays(mon, 6), fmt)}
         </p>
       </header>
+      <p className="mb-4 flex items-center gap-1 text-xs text-muted-foreground">
+        Minimum counts as a check-in
+        <InfoTip term="minimum">The smallest version of a routine. It counts toward your weekly target, same as Done.</InfoTip>
+        · Below target
+        <InfoTip term="below target">This week's consistency is under your threshold (default 80%) — a signal, not a failure.</InfoTip>
+      </p>
       {withRoutines.length === 0 ? (
         <EmptyState title="No routines yet.">Weekly progress appears once you have routines.</EmptyState>
       ) : (
