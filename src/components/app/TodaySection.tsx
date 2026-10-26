@@ -220,7 +220,7 @@ const CheckInCard = memo(function CheckInCard({
 }: {
   entry: Entry;
   status: DailyStatus | null;
-  time?: string;
+  time?: string | undefined;
   dots: Dot[];
   disabled: boolean;
   onMark: (m: Module, s: DailyStatus) => void;

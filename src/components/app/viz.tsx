@@ -56,7 +56,7 @@ const STATE = {
 } as const;
 
 /** Status chip: icon + text, so state is never conveyed by color alone. */
-export function StateChip({ status, suffix }: { status: DailyStatus; suffix?: string }) {
+export function StateChip({ status, suffix }: { status: DailyStatus; suffix?: string | undefined }) {
   const s = STATE[status];
   const Icon = s.icon;
   return (
