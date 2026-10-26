@@ -43,7 +43,9 @@ export function GoalCard({
             {goalStatusLabel(goal)}
           </p>
           <h3 className="mt-1 text-2xl font-semibold leading-tight tracking-tight">{goal.name}</h3>
-          {goal.why && <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{goal.why}</p>}
+          {goal.why && (
+            <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{goal.why}</p>
+          )}
         </div>
         <Ring
           value={consistency}

@@ -39,9 +39,15 @@ export function GoalInsights({
         <h2 id="pace-h" className="sr-only">
           Pace
         </h2>
-        <PaceStat label="Recent pace (4 wks)" value={recent === null ? "—" : `${Math.round(Math.min(1, recent) * 100)}%`} />
+        <PaceStat
+          label="Recent pace (4 wks)"
+          value={recent === null ? "—" : `${Math.round(Math.min(1, recent) * 100)}%`}
+        />
         <PaceStat label="Target" value={`${Math.round(threshold * 100)}%`} />
-        <PaceStat label="Time elapsed" value={elapsed === null ? "No deadline" : `${Math.round(elapsed * 100)}%`} />
+        <PaceStat
+          label="Time elapsed"
+          value={elapsed === null ? "No deadline" : `${Math.round(elapsed * 100)}%`}
+        />
         <p className="border-l-2 pl-2 text-[11px] uppercase tracking-[0.1em] text-muted-foreground sm:col-span-3">
           {recent === null
             ? "Pace appears after a full week of check-ins."
@@ -66,7 +72,9 @@ export function GoalInsights({
           Consistency trend
         </h2>
         <TrendChart data={trend} threshold={threshold} />
-        <p className="mt-1 text-xs text-muted-foreground">Past weeks estimated from current schedules.</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Past weeks estimated from current schedules.
+        </p>
       </section>
     </div>
   );

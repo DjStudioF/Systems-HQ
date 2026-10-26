@@ -51,14 +51,21 @@ function WeekPage() {
       (goals.data ?? [])
         .filter((g) => g.lifecycle !== "archived")
         .flatMap((g) =>
-          g.modules.filter((m) => !m.archived_at).map((m) => ({ module: m, goalName: g.name, goalId: g.id })),
+          g.modules
+            .filter((m) => !m.archived_at)
+            .map((m) => ({ module: m, goalName: g.name, goalId: g.id })),
         ),
     [goals.data],
   );
   const logs = useMemo(() => range.data ?? [], [range.data]);
   const weeks = useMemo(() => lastWeekStarts(mon, WEEKS), [mon]);
   const series = useMemo(
-    () => weeklyConsistencySeries(rows.map((r) => r.module), logs, weeks),
+    () =>
+      weeklyConsistencySeries(
+        rows.map((r) => r.module),
+        logs,
+        weeks,
+      ),
     [rows, logs, weeks],
   );
 
@@ -95,7 +102,10 @@ function WeekPage() {
 
       {rows.length === 0 ? (
         <EmptyState title="No routines yet.">
-          <Link to="/goals/new" className="font-medium text-primary underline-offset-4 hover:underline">
+          <Link
+            to="/goals/new"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
             Create a goal and routine
           </Link>{" "}
           — weekly progress appears here.
@@ -125,7 +135,10 @@ function WeekPage() {
             </Stat>
           </section>
 
-          <section aria-label="Routines this week" className="overflow-x-auto rounded-xl border bg-surface-1">
+          <section
+            aria-label="Routines this week"
+            className="overflow-x-auto rounded-xl border bg-surface-1"
+          >
             <table className="num w-full min-w-[640px] text-sm">
               <thead className="text-xs text-muted-foreground">
                 <tr className="border-b">
@@ -133,7 +146,10 @@ function WeekPage() {
                   {DAYS.map((d, i) => (
                     <th
                       key={i}
-                      className={cn("w-6 py-2 text-center font-medium", addDays(mon, i) === today && "text-foreground")}
+                      className={cn(
+                        "w-6 py-2 text-center font-medium",
+                        addDays(mon, i) === today && "text-foreground",
+                      )}
                     >
                       {d}
                     </th>
@@ -174,7 +190,9 @@ function WeekPage() {
               <h2 id="trend-h" className="text-sm font-medium">
                 Consistency, last {WEEKS} weeks
               </h2>
-              <p className="text-xs text-muted-foreground">Past weeks estimated from current schedules</p>
+              <p className="text-xs text-muted-foreground">
+                Past weeks estimated from current schedules
+              </p>
             </div>
             <TrendChart data={series} threshold={threshold} />
           </section>
@@ -238,7 +256,8 @@ function WeekRow({
         : "below";
   const trend = useMemo(() => weeklyConsistencySeries([m], mine, weeks), [m, mine, weeks]);
   const prior = trend.slice(-3, -1);
-  const slipping = prior.length === 2 && prior.every((p) => p.value !== null && p.value < threshold);
+  const slipping =
+    prior.length === 2 && prior.every((p) => p.value !== null && p.value < threshold);
 
   return (
     <Fragment>
@@ -251,7 +270,10 @@ function WeekRow({
             className="flex items-center gap-2 text-left"
           >
             <ChevronDown
-              className={cn("size-4 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")}
+              className={cn(
+                "size-4 shrink-0 text-muted-foreground transition-transform",
+                open && "rotate-180",
+              )}
               aria-hidden="true"
             />
             <span>
@@ -278,7 +300,10 @@ function WeekRow({
         </td>
         <td className="px-3 py-2">
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-3">
-            <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(1, ratio) * 100}%` }} />
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: `${Math.min(1, ratio) * 100}%` }}
+            />
           </div>
         </td>
         <td className="px-3 py-2">
@@ -334,7 +359,8 @@ function Cell({
         date === today && "outline outline-1 outline-offset-1 outline-foreground/60",
         date > today && "opacity-40",
         status === "done" && "bg-state-done",
-        status === "minimum" && "bg-[linear-gradient(to_top,var(--color-state-minimum)_50%,transparent_50%)] border border-state-minimum",
+        status === "minimum" &&
+          "bg-[linear-gradient(to_top,var(--color-state-minimum)_50%,transparent_50%)] border border-state-minimum",
         status === "skipped" && "border border-state-skipped",
         !status && (scheduled ? "bg-surface-3" : "bg-surface-2 opacity-50"),
       )}

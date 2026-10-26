@@ -1,5 +1,13 @@
 import { memo } from "react";
-import { Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { addDays, formatIsoDate, isoWeekday, type IsoDate } from "@/lib/date/local-date";
 import { cn } from "@/lib/utils";
 
@@ -107,7 +115,11 @@ export const Heatmap = memo(function Heatmap({
       role="img"
       aria-label={label}
       className="grid grid-flow-col"
-      style={{ gridTemplateRows: `repeat(7, ${cell}px)`, gridTemplateColumns: `repeat(${cols}, ${cell}px)`, gap }}
+      style={{
+        gridTemplateRows: `repeat(7, ${cell}px)`,
+        gridTemplateColumns: `repeat(${cols}, ${cell}px)`,
+        gap,
+      }}
     >
       {cells.map((d, i) =>
         d ? (

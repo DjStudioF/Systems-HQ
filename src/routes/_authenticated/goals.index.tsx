@@ -35,7 +35,10 @@ function GoalsPage() {
   const { from, to } = heatmapRange(today, 12);
   const { data: logs } = useQuery(rangeLogsQuery(user.id, from, to));
   const stats = useMemo(() => {
-    const map = new Map<string, { consistency: number | null; heat: ReturnType<typeof dailySuccessCounts> }>();
+    const map = new Map<
+      string,
+      { consistency: number | null; heat: ReturnType<typeof dailySuccessCounts> }
+    >();
     for (const g of goals.data ?? []) {
       const ids = new Set(g.modules.map((m) => m.id));
       const mine = (logs ?? []).filter((l) => ids.has(l.module_id));
@@ -101,11 +104,7 @@ function GoalsPage() {
           <Button variant="ghost" size="sm" onClick={() => setShowArchived((v) => !v)}>
             {showArchived ? "Hide" : "Show"} archived ({archived.length})
           </Button>
-          {showArchived && (
-            <div className="mt-3 space-y-4 opacity-75">
-              {archived.map(card)}
-            </div>
-          )}
+          {showArchived && <div className="mt-3 space-y-4 opacity-75">{archived.map(card)}</div>}
         </div>
       )}
     </PageContainer>
