@@ -43,3 +43,4 @@
 
 ## Navigation (UI redesign Phase A)
 Real routes: `/` Today, `/week` This week, `/goals`, `/review`, `/history`, `/settings`. The shell header carries the date, today's completion ring and the "How this works" slide-over; sidebar collapses to icons below `lg`, mobile uses a 4-tab bar with a "More" sheet. Shared visual primitives live in `src/components/app/viz.tsx`; surface/state tokens in `src/styles.css`.
+Trend and heatmap data come from `rangeLogsQuery` (read-only, invalidated with every log write) and pure functions in `src/lib/calc/trends.ts`; past-week values use current schedules and are labelled as estimates.

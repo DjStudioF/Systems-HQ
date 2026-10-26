@@ -10,8 +10,27 @@ export type Log = Tables<"logs">;
 
 /** Query keys are always scoped by account id so caches never cross accounts. */
 export const logKeys = {
+  all: (userId: string) => ["account", userId, "logs"] as const,
   week: (userId: string, weekStart: IsoDate) => ["account", userId, "logs", weekStart] as const,
+  range: (userId: string, from: IsoDate, to: IsoDate) =>
+    ["account", userId, "logs", "range", from, to] as const,
 };
+
+/** Read-only logs for a date range (trend charts, heatmaps). */
+export const rangeLogsQuery = (userId: string, from: IsoDate, to: IsoDate) =>
+  queryOptions({
+    queryKey: logKeys.range(userId, from, to),
+    queryFn: async (): Promise<Log[]> => {
+      const { data, error } = await supabase
+        .from("logs")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("log_date", from)
+        .lte("log_date", to);
+      if (error) throw new Error("Couldn't load your check-in history.");
+      return data ?? [];
+    },
+  });
 
 export async function fetchWeekLogs(userId: string, weekStart: IsoDate): Promise<Log[]> {
   const { data, error } = await supabase
@@ -140,7 +159,10 @@ export function useLogMutations(userId: string, weekStart: IsoDate) {
             : "Couldn't clear the entry. Your previous state was restored.",
       });
     },
-    onSettled: () => qc.invalidateQueries({ queryKey: key }),
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: key });
+      qc.invalidateQueries({ queryKey: [...logKeys.all(userId), "range"] });
+    },
   });
 
   return {

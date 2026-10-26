@@ -1,69 +1,76 @@
 import { Link } from "@tanstack/react-router";
-import { ProgressBar } from "@/components/app/ProgressBar";
-import { isOnTrack, timeElapsed } from "@/lib/calc/consistency";
+import { Ring } from "@/components/app/viz";
+import { Heatmap } from "@/components/app/charts";
+import { timeElapsed } from "@/lib/calc/consistency";
 import type { GoalWithModules } from "@/lib/services/goals";
-import type { IsoDate } from "@/lib/date/local-date";
+import { formatIsoDate, type IsoDate } from "@/lib/date/local-date";
+
+export function goalStatusLabel(g: GoalWithModules) {
+  if (g.lifecycle === "archived") return "Archived";
+  if (g.lifecycle === "completed") return "Completed";
+  return g.mode === "maintain" ? "Maintain" : "Active";
+}
 
 /**
- * Goal summary card. Shows weekly consistency (unweighted, vs the threshold)
- * and time elapsed (calendar-based, never labelled as completion).
+ * Calm, typographic goal card: name, why, small consistency ring, routine
+ * count + deadline, 12-week mini heatmap. Time elapsed is never completion.
  */
 export function GoalCard({
   goal,
   today,
   consistency,
-  threshold,
+  heat,
 }: {
   goal: GoalWithModules;
   today: IsoDate;
-  consistency?: number | null;
-  threshold?: number;
+  consistency: number | null;
+  heat: { date: IsoDate; count: number; skipped: number }[];
 }) {
-  const activeModules = goal.modules.filter((m) => !m.archived_at);
+  const n = goal.modules.filter((m) => !m.archived_at).length;
   const elapsed = timeElapsed(goal.start_date, goal.deadline, today);
+  const pct = consistency === null ? null : Math.round(Math.min(1, consistency) * 100);
 
   return (
     <Link
       to="/goals/$goalId"
       params={{ goalId: goal.id }}
       search={{ first: false }}
-      className="surface block space-y-3 p-4 transition-colors hover:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex flex-col gap-4 rounded-2xl border border-transparent bg-surface-1/60 p-6 transition-colors duration-[var(--motion-fast)] hover:border-border"
     >
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-medium text-foreground">{goal.name}</h3>
-        <span className="shrink-0 text-xs capitalize text-muted-foreground">
-          {goal.mode}
-          {goal.lifecycle !== "active" ? ` · ${goal.lifecycle}` : ""}
-        </span>
-      </div>
-      <p className="text-sm text-muted-foreground">
-        {activeModules.length === 0
-          ? "No routines yet"
-          : `${activeModules.length} ${activeModules.length === 1 ? "routine" : "routines"}`}
-      </p>
-      {consistency !== undefined && threshold !== undefined && (
-        <div className="space-y-1 pt-1">
-          <ProgressBar
-            ratio={consistency}
-            label="Consistency this week"
-            nullText="No scheduled routines"
-          />
-          {consistency !== null && (
-            <p className="text-xs text-muted-foreground">
-              {isOnTrack(consistency, threshold)
-                ? `On track (target ${Math.round(threshold * 100)}%)`
-                : `Below the ${Math.round(threshold * 100)}% target`}
-            </p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+            {goalStatusLabel(goal)}
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold leading-tight tracking-tight">{goal.name}</h3>
+          {goal.why && (
+            <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{goal.why}</p>
           )}
         </div>
+        <Ring
+          value={consistency}
+          size={44}
+          stroke={4}
+          label={pct === null ? "No schedule this week" : `${pct}% consistency this week`}
+        >
+          {pct === null ? "—" : pct}
+        </Ring>
+      </div>
+      <p className="num text-xs text-muted-foreground">
+        {n === 0 ? "No routines yet" : `${n} ${n === 1 ? "routine" : "routines"}`} ·{" "}
+        {goal.deadline
+          ? `Deadline ${formatIsoDate(goal.deadline, { month: "short", day: "numeric", year: "numeric" })}`
+          : "No deadline set"}
+        {elapsed !== null && ` · ${Math.round(elapsed * 100)}% of time elapsed`}
+      </p>
+      {elapsed !== null && (
+        <p className="border-l-2 pl-2 text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+          Time elapsed — not a measure of completion
+        </p>
       )}
-      <ProgressBar
-        ratio={elapsed}
-        label="Time elapsed"
-        nullText="No deadline set"
-        className="pt-1"
-      />
-      <p className="text-xs text-muted-foreground">Time elapsed — not a measure of completion.</p>
+      <div className="overflow-hidden">
+        <Heatmap days={heat} today={today} cell={8} gap={2} label={`${goal.name}: last 12 weeks`} />
+      </div>
     </Link>
   );
 }

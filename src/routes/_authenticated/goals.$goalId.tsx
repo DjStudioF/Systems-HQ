@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Archive, ArchiveRestore, CheckCircle2, Pencil, Plus } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { ModuleForm } from "@/components/app/ModuleForm";
-import { ProgressBar } from "@/components/app/ProgressBar";
+import { GoalInsights } from "@/components/app/GoalInsights";
 import { EmptyState, ErrorState, FullPageLoading } from "@/components/app/States";
 import { Button } from "@/components/ui/button";
 import {
@@ -122,7 +122,11 @@ function GoalDetailPage() {
               ` · deadline ${formatIsoDate(g.deadline, { month: "short", day: "numeric", year: "numeric" })}`}
             {g.lifecycle !== "active" && ` · ${g.lifecycle}`}
           </p>
-          {g.why && <p className="mt-3 max-w-xl text-muted-foreground">{g.why}</p>}
+          {g.why && (
+            <blockquote className="mt-5 max-w-2xl border-l-2 border-primary pl-4 text-xl leading-snug tracking-tight text-foreground/85">
+              “{g.why}”
+            </blockquote>
+          )}
         </div>
         <div className="flex flex-wrap gap-2">
           {!isArchived && (
@@ -168,13 +172,13 @@ function GoalDetailPage() {
         </div>
       </div>
 
-      <div className="surface mt-6 max-w-xl space-y-2 p-4">
-        <ProgressBar ratio={elapsed} label="Time elapsed" nullText="No deadline set" />
-        <p className="text-xs text-muted-foreground">
-          Time elapsed — not a measure of completion. Weekly consistency appears once daily logging
-          arrives in the next stage.
-        </p>
-      </div>
+      <GoalInsights
+        userId={user.id}
+        goal={g}
+        today={today}
+        threshold={profile?.consistency_threshold ?? 0.8}
+        elapsed={elapsed}
+      />
 
       <div className="mt-10">
         <div className="mb-3 flex items-center justify-between gap-4">
