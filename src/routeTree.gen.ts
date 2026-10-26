@@ -22,6 +22,7 @@ import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedGoalsGoalIdRouteImport } from './routes/_authenticated/goals.$goalId'
 import { Route as AuthenticatedGoalsNewRouteImport } from './routes/_authenticated/goals.new'
 import { Route as AuthenticatedGoalsGoalIdEditRouteImport } from './routes/_authenticated/goals.$goalId_.edit'
+import { Route as ApiPublicJobsSendRemindersRouteImport } from './routes/api/public/jobs/send-reminders'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -89,6 +90,12 @@ const AuthenticatedGoalsGoalIdEditRoute =
     path: '/goals/$goalId/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicJobsSendRemindersRoute =
+  ApiPublicJobsSendRemindersRouteImport.update({
+    id: '/api/public/jobs/send-reminders',
+    path: '/api/public/jobs/send-reminders',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/goals/new': typeof AuthenticatedGoalsNewRoute
   '/goals/': typeof AuthenticatedGoalsIndexRoute
   '/goals/$goalId/edit': typeof AuthenticatedGoalsGoalIdEditRoute
+  '/api/public/jobs/send-reminders': typeof ApiPublicJobsSendRemindersRoute
 }
 export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
@@ -117,6 +125,7 @@ export interface FileRoutesByTo {
   '/goals/new': typeof AuthenticatedGoalsNewRoute
   '/goals': typeof AuthenticatedGoalsIndexRoute
   '/goals/$goalId/edit': typeof AuthenticatedGoalsGoalIdEditRoute
+  '/api/public/jobs/send-reminders': typeof ApiPublicJobsSendRemindersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,6 +142,7 @@ export interface FileRoutesById {
   '/_authenticated/goals/new': typeof AuthenticatedGoalsNewRoute
   '/_authenticated/goals/': typeof AuthenticatedGoalsIndexRoute
   '/_authenticated/goals/$goalId_/edit': typeof AuthenticatedGoalsGoalIdEditRoute
+  '/api/public/jobs/send-reminders': typeof ApiPublicJobsSendRemindersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/goals/new'
     | '/goals/'
     | '/goals/$goalId/edit'
+    | '/api/public/jobs/send-reminders'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/forgot-password'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/goals/new'
     | '/goals'
     | '/goals/$goalId/edit'
+    | '/api/public/jobs/send-reminders'
   id:
     | '__root__'
     | '/_authenticated'
@@ -178,6 +190,7 @@ export interface FileRouteTypes {
     | '/_authenticated/goals/new'
     | '/_authenticated/goals/'
     | '/_authenticated/goals/$goalId_/edit'
+    | '/api/public/jobs/send-reminders'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -185,6 +198,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiPublicJobsSendRemindersRoute: typeof ApiPublicJobsSendRemindersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -280,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGoalsGoalIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/jobs/send-reminders': {
+      id: '/api/public/jobs/send-reminders'
+      path: '/api/public/jobs/send-reminders'
+      fullPath: '/api/public/jobs/send-reminders'
+      preLoaderRoute: typeof ApiPublicJobsSendRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -315,6 +336,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiPublicJobsSendRemindersRoute: ApiPublicJobsSendRemindersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
