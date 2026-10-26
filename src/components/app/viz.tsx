@@ -51,7 +51,11 @@ export function Ring({
           className="stroke-primary transition-[stroke-dashoffset] duration-[var(--motion-base)] ease-out-quick"
         />
       </svg>
-      {children && <span className="num absolute inset-0 flex items-center justify-center text-[10px] font-medium">{children}</span>}
+      {children && (
+        <span className="num absolute inset-0 flex items-center justify-center text-[10px] font-medium">
+          {children}
+        </span>
+      )}
     </span>
   );
 }

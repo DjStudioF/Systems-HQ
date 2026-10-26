@@ -55,3 +55,20 @@ export function dailySuccessCounts(
     };
   });
 }
+
+/** Done / minimum / skipped counts per week (for the stacked weekly bar). */
+export function weeklyStatusCounts(
+  logs: LogLike[],
+  weekStarts: IsoDate[],
+): { week: IsoDate; done: number; minimum: number; skipped: number }[] {
+  return weekStarts.map((week) => {
+    const end = addDays(week, 6);
+    const w = logs.filter((l) => l.log_date >= week && l.log_date <= end);
+    return {
+      week,
+      done: w.filter((l) => l.status === "done").length,
+      minimum: w.filter((l) => l.status === "minimum").length,
+      skipped: w.filter((l) => l.status === "skipped").length,
+    };
+  });
+}

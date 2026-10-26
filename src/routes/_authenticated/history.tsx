@@ -21,6 +21,7 @@ import type { DailyStatus } from "@/lib/calc/consistency";
 import { formatIsoDate } from "@/lib/date/local-date";
 import { useLocalToday } from "@/lib/date/use-local-today";
 import { cn } from "@/lib/utils";
+import { HistoryOverview } from "@/components/app/HistoryOverview";
 
 const searchSchema = z.object({
   goal: fallback(z.string(), "").default(""),
@@ -99,6 +100,8 @@ function HistoryPage() {
           counted, originals keep their entry timezone.
         </p>
       </header>
+
+      <HistoryOverview userId={user.id} today={today} />
 
       <div className="mt-6 flex flex-wrap items-end gap-4">
         <div className="space-y-1.5">

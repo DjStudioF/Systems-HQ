@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { WifiOff, X } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
-import { EmptyState } from "@/components/app/States";
+import { EmptyState, FullPageLoading } from "@/components/app/States";
 import { MottoEditor } from "@/components/app/MottoEditor";
 import { TodaySection } from "@/components/app/TodaySection";
 import { profileQuery } from "@/lib/services/profile";
@@ -59,7 +59,7 @@ function TodayPage() {
     isoWeekday(today) === 7 &&
     !reviews?.some((r) => r.week_start === weekStart(today) && r.state === "submitted");
 
-  if (!profile) return null;
+  if (!profile || !goals) return <FullPageLoading />;
   const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
 
   return (
