@@ -103,8 +103,10 @@ export function TodaySection({
     if (k === "j" || k === "arrowdown" || k === "arrowright") cards[Math.min(i + 1, cards.length - 1)]?.focus();
     else if (k === "k" || k === "arrowup" || k === "arrowleft") cards[Math.max(i - 1, 0)]?.focus();
     else if (["1", "2", "3"].includes(k) && online && !pending) {
-      const e2 = entries.find((x) => x.module.id === cards[i].dataset.card);
-      if (e2) mark(e2.module, (["done", "minimum", "skipped"] as const)[Number(k) - 1]);
+      const id = cards[i]?.dataset["card"];
+      const e2 = entries.find((x) => x.module.id === id);
+      const s = (["done", "minimum", "skipped"] as const)[Number(k) - 1];
+      if (e2 && s) mark(e2.module, s);
     } else return;
     e.preventDefault();
   };
