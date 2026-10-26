@@ -135,9 +135,25 @@ function WeekPage() {
             </Stat>
           </section>
 
+          <ul
+            aria-label="Routines this week"
+            className="divide-y rounded-xl border bg-surface-1 md:hidden"
+          >
+            {rows.map((r) => (
+              <MobileRow
+                key={r.module.id}
+                row={r}
+                logs={logs}
+                mon={mon}
+                today={today}
+                weeks={weeks}
+                threshold={threshold}
+              />
+            ))}
+          </ul>
           <section
             aria-label="Routines this week"
-            className="overflow-x-auto rounded-xl border bg-surface-1"
+            className="hidden overflow-x-auto rounded-xl border bg-surface-1 md:block"
           >
             <table className="num w-full min-w-[640px] text-sm">
               <thead className="text-xs text-muted-foreground">
@@ -186,7 +202,7 @@ function WeekPage() {
           </section>
 
           <section aria-labelledby="trend-h" className="rounded-xl border bg-surface-1 p-4">
-            <div className="mb-2 flex items-baseline justify-between">
+            <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 id="trend-h" className="text-sm font-medium">
                 Consistency, last {WEEKS} weeks
               </h2>
