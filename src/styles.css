@@ -35,6 +35,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-warning: var(--warning);
+  --color-overlay: var(--overlay);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
@@ -94,6 +95,7 @@
   --state-minimum: oklch(0.6 0.12 75);
   --state-below: oklch(0.55 0.15 15);
   --state-skipped: oklch(0.55 0.01 90);
+  --overlay: oklch(0.26 0.014 85 / 45%);
   --motion-fast: 150ms;
   --motion-base: 220ms;
 }
@@ -129,6 +131,7 @@
   --state-minimum: oklch(0.8 0.12 80);
   --state-below: oklch(0.72 0.14 15);
   --state-skipped: oklch(0.6 0.01 90);
+  --overlay: oklch(0.08 0.004 80 / 70%);
 }
 
 @layer base {
