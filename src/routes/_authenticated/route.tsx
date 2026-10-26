@@ -45,7 +45,7 @@ function AuthenticatedLayout() {
   if (!profile.data.timezone_confirmed) return <TimezoneSetup userId={user.id} />;
 
   return (
-    <AppShell profile={profile.data} email={user.email}>
+    <AppShell profile={profile.data} email={user.email} userId={user.id}>
       <Outlet />
     </AppShell>
   );

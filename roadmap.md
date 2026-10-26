@@ -5,3 +5,9 @@
 - [x] Stage 4 — history, weekly reviews, snapshots (awaiting user review)
 - [x] Stage 5 — export + validated restore (awaiting user review)
 - [x] Stage 6 — audit fixes applied (publish awaits user approval)
+
+## UI redesign
+- [x] Phase A — tokens, shell, real routes, help slide-over, mobile tabs
+- [ ] Phase B — Today check-in rail
+- [ ] Phase C — This week instrument panel + Goals
+- [ ] Phase D — History visuals + polish

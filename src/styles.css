@@ -35,6 +35,14 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-warning: var(--warning);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-state-done: var(--state-done);
+  --color-state-minimum: var(--state-minimum);
+  --color-state-below: var(--state-below);
+  --color-state-skipped: var(--state-skipped);
+  --ease-out-quick: cubic-bezier(0.2, 0.8, 0.2, 1);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -79,14 +87,23 @@
   --border: oklch(0.26 0.014 85 / 12%);
   --input: oklch(0.26 0.014 85 / 18%);
   --ring: oklch(0.47 0.08 200);
+  --surface-1: oklch(0.993 0.004 90);
+  --surface-2: oklch(0.955 0.007 95);
+  --surface-3: oklch(0.925 0.009 95);
+  --state-done: oklch(0.52 0.12 150);
+  --state-minimum: oklch(0.6 0.12 75);
+  --state-below: oklch(0.55 0.15 15);
+  --state-skipped: oklch(0.55 0.01 90);
+  --motion-fast: 150ms;
+  --motion-base: 220ms;
 }
 
 .dark {
-  --background: oklch(0.2 0.004 80);
+  --background: oklch(0.155 0.004 80);
   --foreground: oklch(0.94 0.008 90);
-  --card: oklch(0.24 0.006 75);
+  --card: oklch(0.2 0.005 78);
   --card-foreground: oklch(0.94 0.008 90);
-  --popover: oklch(0.24 0.006 75);
+  --popover: oklch(0.23 0.006 75);
   --popover-foreground: oklch(0.94 0.008 90);
   --primary: oklch(0.72 0.08 200);
   --primary-hover: oklch(0.79 0.07 200);
@@ -105,6 +122,13 @@
   --border: oklch(0.94 0.008 90 / 12%);
   --input: oklch(0.94 0.008 90 / 18%);
   --ring: oklch(0.72 0.08 200);
+  --surface-1: oklch(0.2 0.005 78);
+  --surface-2: oklch(0.24 0.006 78);
+  --surface-3: oklch(0.285 0.007 78);
+  --state-done: oklch(0.74 0.13 150);
+  --state-minimum: oklch(0.8 0.12 80);
+  --state-below: oklch(0.72 0.14 15);
+  --state-skipped: oklch(0.6 0.01 90);
 }
 
 @layer base {
@@ -150,4 +174,9 @@
 @utility tap {
   min-height: 44px;
   min-width: 44px;
+}
+
+@utility num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
