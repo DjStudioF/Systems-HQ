@@ -31,7 +31,14 @@ export function Ring({
       style={{ width: size, height: size }}
     >
       <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-surface-3" />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          strokeWidth={stroke}
+          className="stroke-surface-3"
+        />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -56,7 +63,13 @@ const STATE = {
 } as const;
 
 /** Status chip: icon + text, so state is never conveyed by color alone. */
-export function StateChip({ status, suffix }: { status: DailyStatus; suffix?: string | undefined }) {
+export function StateChip({
+  status,
+  suffix,
+}: {
+  status: DailyStatus;
+  suffix?: string | undefined;
+}) {
   const s = STATE[status];
   const Icon = s.icon;
   return (

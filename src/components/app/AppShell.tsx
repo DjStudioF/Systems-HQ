@@ -73,7 +73,10 @@ export function AppShell({
         className="sticky top-0 hidden h-screen flex-col border-r bg-surface-1 px-2 py-5 md:flex lg:px-3"
         aria-label="Primary"
       >
-        <Link to="/" className="tap flex items-center justify-center rounded-lg lg:justify-start lg:px-2">
+        <Link
+          to="/"
+          className="tap flex items-center justify-center rounded-lg lg:justify-start lg:px-2"
+        >
           <span className="lg:hidden" aria-label="Systems HQ">
             <Brand compact />
           </span>

@@ -10,7 +10,9 @@ export function useTodayProgress(userId: string, today: IsoDate) {
   const wd = isoWeekday(today);
   const ids = (goals ?? [])
     .filter((g) => g.lifecycle !== "archived")
-    .flatMap((g) => g.modules.filter((m) => !m.archived_at && m.days.includes(wd)).map((m) => m.id));
+    .flatMap((g) =>
+      g.modules.filter((m) => !m.archived_at && m.days.includes(wd)).map((m) => m.id),
+    );
   const done = ids.filter((id) =>
     (logs ?? []).some((l) => l.module_id === id && l.log_date === today),
   ).length;

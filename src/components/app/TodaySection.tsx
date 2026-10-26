@@ -18,7 +18,11 @@ const LABEL: Record<DailyStatus, string> = { done: "Done", minimum: "Minimum", s
 function timeIn(tz: string, iso: string | undefined) {
   if (!iso) return undefined;
   try {
-    return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit", timeZone: tz }).format(new Date(iso));
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: tz,
+    }).format(new Date(iso));
   } catch {
     return undefined;
   }
@@ -61,7 +65,8 @@ export function TodaySection({
 
   const mark = useCallback(
     (module: Module, status: DailyStatus) => {
-      const prev = logs.find((l) => l.module_id === module.id && l.log_date === today)?.status ?? null;
+      const prev =
+        logs.find((l) => l.module_id === module.id && l.log_date === today)?.status ?? null;
       act({ kind: "set", moduleId: module.id, date: today, status, timezone });
       const undo = () =>
         prev
@@ -69,9 +74,10 @@ export function TodaySection({
           : act({ kind: "clear", moduleId: module.id, date: today });
       const wasCounted = prev === "done" || prev === "minimum";
       const counts = status !== "skipped";
-      const before = logs.filter(
-        (l) => l.module_id === module.id && l.log_date !== today && l.status !== "skipped",
-      ).length + (wasCounted ? 1 : 0);
+      const before =
+        logs.filter(
+          (l) => l.module_id === module.id && l.log_date !== today && l.status !== "skipped",
+        ).length + (wasCounted ? 1 : 0);
       const after = before - (wasCounted ? 1 : 0) + (counts ? 1 : 0);
       const target = module.days.length;
       if (after >= target && before < target) {
@@ -100,7 +106,8 @@ export function TodaySection({
     const i = cards.indexOf(document.activeElement as HTMLElement);
     if (i < 0) return;
     const k = e.key.toLowerCase();
-    if (k === "j" || k === "arrowdown" || k === "arrowright") cards[Math.min(i + 1, cards.length - 1)]?.focus();
+    if (k === "j" || k === "arrowdown" || k === "arrowright")
+      cards[Math.min(i + 1, cards.length - 1)]?.focus();
     else if (k === "k" || k === "arrowup" || k === "arrowleft") cards[Math.max(i - 1, 0)]?.focus();
     else if (["1", "2", "3"].includes(k) && online && !pending) {
       const id = cards[i]?.dataset["card"];
@@ -190,7 +197,9 @@ export function TodaySection({
 }
 
 function Kbd({ children }: { children: string }) {
-  return <kbd className="num rounded border bg-surface-2 px-1.5 py-0.5 text-[11px]">{children}</kbd>;
+  return (
+    <kbd className="num rounded border bg-surface-2 px-1.5 py-0.5 text-[11px]">{children}</kbd>
+  );
 }
 
 type Dot = { date: IsoDate; status: DailyStatus | null; scheduled: boolean };
@@ -240,7 +249,12 @@ const CheckInCard = memo(function CheckInCard({
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <p className={cn("text-lg font-semibold leading-tight tracking-tight", status && "text-muted-foreground")}>
+        <p
+          className={cn(
+            "text-lg font-semibold leading-tight tracking-tight",
+            status && "text-muted-foreground",
+          )}
+        >
           {module.name}
         </p>
         <DotStrip dots={dots} />
