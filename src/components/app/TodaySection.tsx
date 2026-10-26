@@ -286,7 +286,7 @@ const CheckInCard = memo(function CheckInCard({
       ) : (
         <div className="mt-auto flex gap-2" role="group" aria-label={`Log ${module.name}`}>
           <Button
-            className="h-12 flex-1 text-base"
+            className="h-12 min-w-0 flex-[3] text-base"
             disabled={disabled}
             onClick={() => onMark(module, "done")}
           >
@@ -294,7 +294,7 @@ const CheckInCard = memo(function CheckInCard({
           </Button>
           <Button
             variant="ghost"
-            className="h-12 px-3 text-muted-foreground"
+            className="h-12 min-w-0 flex-1 px-2 text-muted-foreground"
             disabled={disabled}
             onClick={() => onMark(module, "minimum")}
           >
@@ -302,7 +302,7 @@ const CheckInCard = memo(function CheckInCard({
           </Button>
           <Button
             variant="ghost"
-            className="h-12 px-3 text-muted-foreground"
+            className="h-12 min-w-0 flex-1 px-2 text-muted-foreground"
             disabled={disabled}
             aria-label="Skipped"
             onClick={() => onMark(module, "skipped")}

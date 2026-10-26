@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { GoalCard } from "@/components/app/GoalCard";
@@ -8,7 +8,11 @@ import { EmptyState, LoadingRows } from "@/components/app/States";
 import { Button } from "@/components/ui/button";
 import { goalsQuery } from "@/lib/services/goals";
 import { profileQuery } from "@/lib/services/profile";
-import { localToday } from "@/lib/date/local-date";
+import { localToday, weekStart } from "@/lib/date/local-date";
+import { rangeLogsQuery } from "@/lib/services/logs";
+import { heatmapRange } from "@/components/app/charts";
+import { dailySuccessCounts, weeklyConsistencySeries } from "@/lib/calc/trends";
+import type { GoalWithModules } from "@/lib/services/goals";
 
 export const Route = createFileRoute("/_authenticated/goals/")({
   head: () => ({
@@ -28,6 +32,29 @@ function GoalsPage() {
   const goals = useQuery(goalsQuery(user.id));
   const [showArchived, setShowArchived] = useState(false);
   const today = localToday(profile?.timezone ?? "UTC", new Date());
+  const { from, to } = heatmapRange(today, 12);
+  const { data: logs } = useQuery(rangeLogsQuery(user.id, from, to));
+  const stats = useMemo(() => {
+    const map = new Map<string, { consistency: number | null; heat: ReturnType<typeof dailySuccessCounts> }>();
+    for (const g of goals.data ?? []) {
+      const ids = new Set(g.modules.map((m) => m.id));
+      const mine = (logs ?? []).filter((l) => ids.has(l.module_id));
+      map.set(g.id, {
+        consistency: weeklyConsistencySeries(g.modules, mine, [weekStart(today)])[0]?.value ?? null,
+        heat: dailySuccessCounts(mine, from, to),
+      });
+    }
+    return map;
+  }, [goals.data, logs, today, from, to]);
+  const card = (g: GoalWithModules) => (
+    <GoalCard
+      key={g.id}
+      goal={g}
+      today={today}
+      consistency={stats.get(g.id)?.consistency ?? null}
+      heat={stats.get(g.id)?.heat ?? []}
+    />
+  );
 
   if (goals.isPending)
     return (
@@ -65,7 +92,7 @@ function GoalsPage() {
             .
           </EmptyState>
         ) : (
-          active.map((g) => <GoalCard key={g.id} goal={g} today={today} />)
+          <div className="grid gap-4 lg:grid-cols-2">{active.map(card)}</div>
         )}
       </div>
 
@@ -76,9 +103,7 @@ function GoalsPage() {
           </Button>
           {showArchived && (
             <div className="mt-3 space-y-4 opacity-75">
-              {archived.map((g) => (
-                <GoalCard key={g.id} goal={g} today={today} />
-              ))}
+              {archived.map(card)}
             </div>
           )}
         </div>
