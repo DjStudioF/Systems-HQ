@@ -40,3 +40,6 @@
 
 ## Theme
 - The preference is saved in `profiles.theme`. A pre-paint inline script reads the cached hint (`localStorage["shq-theme"]`) to avoid a flash on load. No user data is stored in localStorage.
+
+## Navigation (UI redesign Phase A)
+Real routes: `/` Today, `/week` This week, `/goals`, `/review`, `/history`, `/settings`. The shell header carries the date, today's completion ring and the "How this works" slide-over; sidebar collapses to icons below `lg`, mobile uses a 4-tab bar with a "More" sheet. Shared visual primitives live in `src/components/app/viz.tsx`; surface/state tokens in `src/styles.css`.
