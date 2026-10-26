@@ -114,14 +114,14 @@ function WeekPage() {
         <div className="space-y-8">
           <section
             aria-label="Week summary"
-            className="grid grid-cols-3 divide-x rounded-xl border bg-surface-1 text-sm"
+            className="grid grid-cols-3 divide-x overflow-hidden rounded-xl border bg-surface-1 text-sm"
           >
             <Stat label="Consistency">
-              <span className="text-3xl font-semibold tracking-tight">
+              <span className="text-2xl font-semibold tracking-tight sm:text-3xl">
                 {cur === null ? "—" : `${Math.round(Math.min(1, cur) * 100)}%`}
               </span>
               {delta !== null && Math.round(delta * 100) !== 0 && (
-                <span className="ml-2 text-xs text-muted-foreground">
+                <span className="block text-xs text-muted-foreground sm:ml-2 sm:inline">
                   {delta > 0 ? "▲" : "▼"} {Math.abs(Math.round(delta * 100))}% vs last week
                 </span>
               )}
@@ -218,25 +218,14 @@ const CHIP: Record<Status, { label: string; cls: string }> = {
   progress: { label: "In progress", cls: "border-border text-muted-foreground" },
 };
 
-function WeekRow({
-  row,
-  logs,
-  mon,
-  today,
-  weeks,
-  threshold,
-  open,
-  onToggle,
-}: {
-  row: Row;
-  logs: Log[];
-  mon: IsoDate;
-  today: IsoDate;
-  weeks: IsoDate[];
-  threshold: number;
-  open: boolean;
-  onToggle: () => void;
-}) {
+function useRowStats(
+  row: Row,
+  logs: Log[],
+  mon: IsoDate,
+  today: IsoDate,
+  weeks: IsoDate[],
+  threshold: number,
+) {
   const { module: m } = row;
   const sun = addDays(mon, 6);
   const mine = logs.filter((l) => l.module_id === m.id);
@@ -258,6 +247,89 @@ function WeekRow({
   const prior = trend.slice(-3, -1);
   const slipping =
     prior.length === 2 && prior.every((p) => p.value !== null && p.value < threshold);
+
+  return { week, target, successes, ratio, status, trend, slipping };
+}
+
+function MobileRow({
+  row,
+  logs,
+  mon,
+  today,
+  weeks,
+  threshold,
+}: {
+  row: Row;
+  logs: Log[];
+  mon: IsoDate;
+  today: IsoDate;
+  weeks: IsoDate[];
+  threshold: number;
+}) {
+  const m = row.module;
+  const { week, target, successes, status, slipping } = useRowStats(row, logs, mon, today, weeks, threshold);
+  return (
+    <li className="space-y-2 px-4 py-3">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+        <p className="min-w-0">
+          <span className="block truncate font-medium leading-tight">{m.name}</span>
+          <span className="block truncate text-xs text-muted-foreground">{row.goalName}</span>
+        </p>
+        <span className={cn("inline-flex h-6 shrink-0 items-center rounded-full border px-2 text-xs font-medium", CHIP[status].cls)}>
+          {CHIP[status].label}
+        </span>
+      </div>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex gap-1.5">
+          {DAYS.map((d, i) => {
+            const date = addDays(mon, i);
+            return (
+              <span key={i} className="flex flex-col items-center gap-1 text-[10px] text-muted-foreground">
+                <Cell
+                  date={date}
+                  today={today}
+                  scheduled={m.days.includes(isoWeekday(date))}
+                  status={week.find((l) => l.log_date === date)?.status ?? null}
+                />
+                {d}
+              </span>
+            );
+          })}
+        </div>
+        <p className="num text-sm">
+          {Math.min(successes, target)} <span className="text-muted-foreground">of {target}</span>
+        </p>
+      </div>
+      {slipping && (
+        <p className="text-xs text-muted-foreground">
+          Under target two weeks running — the standard may be higher than life allows right now.
+        </p>
+      )}
+    </li>
+  );
+}
+
+function WeekRow({
+  row,
+  logs,
+  mon,
+  today,
+  weeks,
+  threshold,
+  open,
+  onToggle,
+}: {
+  row: Row;
+  logs: Log[];
+  mon: IsoDate;
+  today: IsoDate;
+  weeks: IsoDate[];
+  threshold: number;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const { module: m } = row;
+  const { week, target, successes, ratio, status, trend, slipping } = useRowStats(row, logs, mon, today, weeks, threshold);
 
   return (
     <Fragment>
