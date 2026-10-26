@@ -8,6 +8,6 @@
 
 ## UI redesign
 - [x] Phase A — tokens, shell, real routes, help slide-over, mobile tabs
-- [ ] Phase B — Today check-in rail
+- [x] Phase B — Today check-in rail
 - [ ] Phase C — This week instrument panel + Goals
 - [ ] Phase D — History visuals + polish
