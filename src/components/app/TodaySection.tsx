@@ -249,6 +249,7 @@ const CheckInCard = memo(function CheckInCard({
         <Link
           to="/goals/$goalId"
           params={{ goalId }}
+          search={{ first: false }}
           className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground"
         >
           {goalName}
