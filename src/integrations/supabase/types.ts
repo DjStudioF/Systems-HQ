@@ -156,6 +156,79 @@ export type Database = {
           },
         ]
       }
+      notification_sends: {
+        Row: {
+          sent_at: string
+          slot_key: string
+          user_id: string
+        }
+        Insert: {
+          sent_at?: string
+          slot_key: string
+          user_id: string
+        }
+        Update: {
+          sent_at?: string
+          slot_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_sends_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_settings: {
+        Row: {
+          daily_days: number[]
+          daily_enabled: boolean
+          daily_only_if_open: boolean
+          daily_times: string[]
+          review_day: number
+          review_enabled: boolean
+          review_only_if_open: boolean
+          review_time: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          daily_days?: number[]
+          daily_enabled?: boolean
+          daily_only_if_open?: boolean
+          daily_times?: string[]
+          review_day?: number
+          review_enabled?: boolean
+          review_only_if_open?: boolean
+          review_time?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          daily_days?: number[]
+          daily_enabled?: boolean
+          daily_only_if_open?: boolean
+          daily_times?: string[]
+          review_day?: number
+          review_enabled?: boolean
+          review_only_if_open?: boolean
+          review_time?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_settings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           consistency_threshold: number
@@ -191,6 +264,44 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          device_label: string
+          endpoint: string
+          id: string
+          p256dh: string
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          device_label?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          user_id?: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          device_label?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       weekly_reviews: {
         Row: {
