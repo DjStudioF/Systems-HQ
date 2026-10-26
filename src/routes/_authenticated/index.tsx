@@ -64,8 +64,8 @@ function TodayPage() {
 
   return (
     <PageContainer>
-      <header className="flex flex-col gap-2 pb-6">
-        <h1 className="text-3xl font-semibold tracking-tight">
+      <header className="flex flex-col gap-2 pb-8">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           {profile.display_name ? `Hi, ${profile.display_name}` : "Today"}
         </h1>
         <MottoEditor userId={user.id} motto={profile.motto} />

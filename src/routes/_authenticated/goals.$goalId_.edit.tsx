@@ -47,7 +47,7 @@ function EditGoalPage() {
   const g = goal.data;
   return (
     <PageContainer>
-      <h1 className="text-3xl font-semibold tracking-tight">Edit goal</h1>
+      <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Edit goal</h1>
       <div className="mt-6">
         <GoalForm
           initial={{

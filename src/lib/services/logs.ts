@@ -172,5 +172,7 @@ export function useLogMutations(userId: string, weekStart: IsoDate) {
     },
     failed,
     pending: mutation.isPending,
+    /** The in-flight action, for per-card saving display. */
+    pendingAction: mutation.isPending ? mutation.variables : undefined,
   };
 }

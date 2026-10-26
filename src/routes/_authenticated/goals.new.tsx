@@ -38,7 +38,7 @@ function NewGoalPage() {
 
   return (
     <PageContainer>
-      <h1 className="text-3xl font-semibold tracking-tight">New goal</h1>
+      <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">New goal</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Something important to achieve or sustain. You'll add the repeatable routines next.
       </p>

@@ -96,7 +96,7 @@ function SettingsForm({
 
   return (
     <PageContainer>
-      <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
+      <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Settings</h1>
       <p className="mt-1 text-sm text-muted-foreground">Signed in as {email}</p>
       <form
         className="mt-6 max-w-xl space-y-6"

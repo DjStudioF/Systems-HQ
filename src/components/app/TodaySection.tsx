@@ -2,11 +2,11 @@ import { memo, useCallback, useRef, useState, type KeyboardEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Check, Minus, X } from "lucide-react";
+import { Check, Loader2, Minus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/app/States";
 import { Ring, StateChip } from "@/components/app/viz";
-import { useLogMutations, weekLogsQuery, type Log } from "@/lib/services/logs";
+import { useLogMutations, weekLogsQuery, type Log, type LogAction } from "@/lib/services/logs";
 import type { GoalWithModules, Module } from "@/lib/services/goals";
 import type { DailyStatus } from "@/lib/calc/consistency";
 import { addDays, isoWeekday, weekStart, type IsoDate } from "@/lib/date/local-date";
@@ -49,7 +49,7 @@ export function TodaySection({
   online: boolean;
 }) {
   const mon = weekStart(today);
-  const { act, retry, failed, pending } = useLogMutations(userId, mon);
+  const { act, retry, failed, pending, pendingAction } = useLogMutations(userId, mon);
   const { data: prevWeek } = useQuery(weekLogsQuery(userId, addDays(mon, -7)));
   const listRef = useRef<HTMLUListElement>(null);
   const [showKeys, setShowKeys] = useState(false);
@@ -186,6 +186,9 @@ export function TodaySection({
               time={timeIn(timezone, log?.updated_at || log?.created_at)}
               dots={last7(e.module, allLogs, today)}
               disabled={!online || pending}
+              saving={pendingAction?.moduleId === e.module.id ? pendingAction : undefined}
+              error={failed?.action.moduleId === e.module.id}
+              onRetry={retry}
               onMark={mark}
               onReopen={reopen}
             />
@@ -226,6 +229,9 @@ const CheckInCard = memo(function CheckInCard({
   time,
   dots,
   disabled,
+  saving,
+  error,
+  onRetry,
   onMark,
   onReopen,
 }: {
@@ -234,6 +240,9 @@ const CheckInCard = memo(function CheckInCard({
   time?: string | undefined;
   dots: Dot[];
   disabled: boolean;
+  saving?: LogAction | undefined;
+  error: boolean;
+  onRetry: () => void;
   onMark: (m: Module, s: DailyStatus) => void;
   onReopen: (m: Module) => void;
 }) {
@@ -244,8 +253,10 @@ const CheckInCard = memo(function CheckInCard({
       tabIndex={0}
       aria-label={`${module.name}${status ? `, ${LABEL[status]}` : ", not checked in"}`}
       className={cn(
-        "flex flex-col gap-3 rounded-2xl border bg-surface-1 p-5 transition-all duration-[var(--motion-base)] ease-out-quick",
+        "flex flex-col gap-3 rounded-2xl border bg-surface-1 p-5 transition-all duration-[var(--motion-base)] ease-out-quick focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         status ? cn(BORDER[status], "bg-background opacity-80") : "shadow-sm",
+        saving && "opacity-70",
+        error && "border-state-below/60",
       )}
     >
       <div className="flex items-start justify-between gap-3">
@@ -257,7 +268,10 @@ const CheckInCard = memo(function CheckInCard({
         >
           {module.name}
         </p>
-        <DotStrip dots={dots} />
+        <span className="flex shrink-0 flex-col items-end gap-1">
+          <DotStrip dots={dots} />
+          <span className="text-[10px] text-muted-foreground">Last 7 days</span>
+        </span>
       </div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <Link
@@ -268,7 +282,14 @@ const CheckInCard = memo(function CheckInCard({
         >
           {goalName}
         </Link>
-        {module.trigger && <p className="text-xs text-muted-foreground">After: {module.trigger}</p>}
+        {module.trigger && (
+          <p
+            className="line-clamp-2 basis-full text-xs text-muted-foreground"
+            title={module.trigger}
+          >
+            After: {module.trigger}
+          </p>
+        )}
       </div>
 
       {status ? (
@@ -276,7 +297,7 @@ const CheckInCard = memo(function CheckInCard({
           type="button"
           disabled={disabled}
           onClick={() => onReopen(module)}
-          className="tap -mb-1 flex items-center gap-2 self-start rounded-lg text-xs text-muted-foreground hover:text-foreground"
+          className="tap -mb-1 flex animate-in items-center gap-2 self-start fade-in duration-200 rounded-lg text-xs text-muted-foreground hover:text-foreground"
           aria-label={`${LABEL[status]}. Undo check-in`}
           title="Click to undo"
         >
@@ -290,26 +311,52 @@ const CheckInCard = memo(function CheckInCard({
             disabled={disabled}
             onClick={() => onMark(module, "done")}
           >
-            <Check /> Done
+            {saving?.kind === "set" && saving.status === "done" ? (
+              <Loader2 className="animate-spin" aria-label="Saving" />
+            ) : (
+              <Check />
+            )}
+            Done
           </Button>
           <Button
             variant="ghost"
-            className="h-12 min-w-0 flex-1 px-2 text-muted-foreground"
+            className="h-12 min-w-0 flex-1 px-2 text-sm text-muted-foreground"
             disabled={disabled}
             onClick={() => onMark(module, "minimum")}
           >
-            <Minus /> Min
+            {saving?.kind === "set" && saving.status === "minimum" ? (
+              <Loader2 className="animate-spin" aria-label="Saving" />
+            ) : (
+              <Minus />
+            )}
+            Min
           </Button>
           <Button
             variant="ghost"
-            className="h-12 min-w-0 flex-1 px-2 text-muted-foreground"
+            className="h-12 min-w-0 flex-1 px-2 text-sm text-muted-foreground"
             disabled={disabled}
-            aria-label="Skipped"
             onClick={() => onMark(module, "skipped")}
           >
-            <X /> Skip
+            {saving?.kind === "set" && saving.status === "skipped" ? (
+              <Loader2 className="animate-spin" aria-label="Saving" />
+            ) : (
+              <X />
+            )}
+            Skip
           </Button>
         </div>
+      )}
+      {error && (
+        <p role="alert" className="flex items-center gap-2 text-xs text-state-below">
+          Not saved.
+          <button
+            type="button"
+            className="font-medium underline underline-offset-4"
+            onClick={onRetry}
+          >
+            Retry
+          </button>
+        </p>
       )}
     </li>
   );
