@@ -16,7 +16,8 @@ export function BrandMark({ size = 24, className }: { size?: number; className?:
   );
 }
 
-export function Brand() {
+export function Brand({ compact }: { compact?: boolean }) {
+  if (compact) return <BrandMark className="text-primary" />;
   return (
     <span className="inline-flex items-center gap-2 font-semibold tracking-tight text-foreground">
       <BrandMark className="text-primary" />
