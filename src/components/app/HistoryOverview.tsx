@@ -44,7 +44,13 @@ export function HistoryOverview({ userId, today }: { userId: string; today: IsoD
           Last 52 weeks
         </h2>
         <div className="overflow-x-auto pb-1">
-          <Heatmap days={heat} today={today} cell={10} gap={2} label="Check-ins over the last year" />
+          <Heatmap
+            days={heat}
+            today={today}
+            cell={10}
+            gap={2}
+            label="Check-ins over the last year"
+          />
         </div>
       </section>
       <section aria-labelledby="wk-h" className="rounded-xl border bg-surface-1 p-4">
@@ -66,9 +72,28 @@ export function HistoryOverview({ userId, today }: { userId: string; today: IsoD
                   color: "var(--color-foreground)",
                 }}
               />
-              <Bar dataKey="done" name="Done" stackId="s" fill="var(--color-state-done)" isAnimationActive={false} />
-              <Bar dataKey="minimum" name="Minimum" stackId="s" fill="var(--color-state-minimum)" isAnimationActive={false} />
-              <Bar dataKey="skipped" name="Skipped" stackId="s" fill="var(--color-state-skipped)" radius={[2, 2, 0, 0]} isAnimationActive={false} />
+              <Bar
+                dataKey="done"
+                name="Done"
+                stackId="s"
+                fill="var(--color-state-done)"
+                isAnimationActive={false}
+              />
+              <Bar
+                dataKey="minimum"
+                name="Minimum"
+                stackId="s"
+                fill="var(--color-state-minimum)"
+                isAnimationActive={false}
+              />
+              <Bar
+                dataKey="skipped"
+                name="Skipped"
+                stackId="s"
+                fill="var(--color-state-skipped)"
+                radius={[2, 2, 0, 0]}
+                isAnimationActive={false}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

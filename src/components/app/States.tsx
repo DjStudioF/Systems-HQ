@@ -36,7 +36,11 @@ export function LoadingRows({ rows = 3 }: { rows?: number }) {
 
 export function FullPageLoading() {
   return (
-    <div className="mx-auto w-full max-w-[1100px] space-y-4 px-4 py-8 md:px-8" aria-busy="true" aria-label="Loading">
+    <div
+      className="mx-auto w-full max-w-[1100px] space-y-4 px-4 py-8 md:px-8"
+      aria-busy="true"
+      aria-label="Loading"
+    >
       <Skeleton className="h-9 w-48" />
       <Skeleton className="h-4 w-72" />
       <div className="grid gap-3 pt-4 [grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))]">

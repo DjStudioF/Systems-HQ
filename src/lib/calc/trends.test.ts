@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { weeklyStatusCounts, dailySuccessCounts, lastWeekStarts, weekDelta, weeklyConsistencySeries } from "./trends";
+import {
+  weeklyStatusCounts,
+  dailySuccessCounts,
+  lastWeekStarts,
+  weekDelta,
+  weeklyConsistencySeries,
+} from "./trends";
 
 const mod = { id: "m", days: [1, 3, 5], created_at: "2026-10-01T00:00:00Z", archived_at: null };
 
