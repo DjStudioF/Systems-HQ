@@ -171,6 +171,10 @@
   border-radius: var(--radius-xl);
 }
 
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @utility tap {
   min-height: 44px;
   min-width: 44px;

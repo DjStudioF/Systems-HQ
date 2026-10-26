@@ -23,8 +23,8 @@ const buttonVariants = cva(
           "border border-input bg-card text-muted-foreground hover:bg-secondary aria-pressed:bg-secondary aria-pressed:text-foreground aria-pressed:border-foreground/30",
       },
       size: {
-        default: "h-11 px-4",
-        sm: "h-9 px-3",
+        default: "h-10 px-4",
+        sm: "h-8 px-3",
         lg: "h-12 px-6 text-base",
         icon: "h-11 w-11",
       },

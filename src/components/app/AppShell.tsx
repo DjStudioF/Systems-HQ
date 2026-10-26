@@ -124,7 +124,12 @@ export function AppShell({
               <Brand compact />
             </Link>
             <p className="text-sm text-muted-foreground">
-              {formatIsoDate(today, { weekday: "long", month: "short", day: "numeric" })}
+              <span className="sm:hidden">
+                {formatIsoDate(today, { weekday: "short", month: "short", day: "numeric" })}
+              </span>
+              <span className="hidden sm:inline">
+                {formatIsoDate(today, { weekday: "long", month: "short", day: "numeric" })}
+              </span>
             </p>
           </div>
           <div className="flex items-center gap-1">
@@ -145,7 +150,6 @@ export function AppShell({
             <Button
               variant="ghost"
               size="icon"
-              className="tap"
               aria-label="How this works"
               onClick={() => setHelp(true)}
             >
@@ -154,12 +158,12 @@ export function AppShell({
           </div>
         </header>
 
-        <div className="pb-24 md:pb-0">{children}</div>
+        <div className="pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">{children}</div>
       </div>
 
       <nav
         aria-label="Mobile"
-        className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t bg-surface-1 md:hidden"
+        className="pb-safe fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t bg-surface-1 md:hidden"
       >
         {PRIMARY.slice(0, 3).map((n) => (
           <Link
