@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { PageContainer } from "@/components/app/AppShell";
 import { BackupSection } from "@/components/app/BackupSection";
+import { NotificationsSection } from "@/components/app/NotificationsSection";
 import { TimezonePicker } from "@/components/app/TimezonePicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -191,6 +192,8 @@ function SettingsForm({
           </Button>
         </div>
       </form>
+
+      <NotificationsSection userId={userId} />
 
       <BackupSection userId={userId} />
 
