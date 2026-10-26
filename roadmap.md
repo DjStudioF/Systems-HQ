@@ -10,4 +10,4 @@
 - [x] Phase A — tokens, shell, real routes, help slide-over, mobile tabs
 - [x] Phase B — Today check-in rail
 - [x] Phase C — This week instrument panel + Goals
-- [ ] Phase D — History visuals + polish
+- [x] Phase D — History visuals + polish
