@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { WifiOff } from "lucide-react";
+import { WifiOff, X } from "lucide-react";
 import { PageContainer } from "@/components/app/AppShell";
 import { EmptyState } from "@/components/app/States";
 import { MottoEditor } from "@/components/app/MottoEditor";
@@ -9,7 +9,8 @@ import { TodaySection } from "@/components/app/TodaySection";
 import { profileQuery } from "@/lib/services/profile";
 import { goalsQuery } from "@/lib/services/goals";
 import { weekLogsQuery } from "@/lib/services/logs";
-import { weekStart } from "@/lib/date/local-date";
+import { reviewsQuery } from "@/lib/services/reviews";
+import { isoWeekday, weekStart } from "@/lib/date/local-date";
 import { useLocalToday } from "@/lib/date/use-local-today";
 
 export const Route = createFileRoute("/_authenticated/")({
@@ -52,6 +53,12 @@ function TodayPage() {
   const { data: weekLogs } = useQuery(weekLogsQuery(user.id, weekStart(today)));
   const logs = useMemo(() => weekLogs ?? [], [weekLogs]);
 
+  const { data: reviews } = useQuery(reviewsQuery(user.id));
+  const [hideReview, setHideReview] = useState(false);
+  const reviewDue =
+    isoWeekday(today) === 7 &&
+    !reviews?.some((r) => r.week_start === weekStart(today) && r.state === "submitted");
+
   if (!profile) return null;
   const activeGoals = (goals ?? []).filter((g) => g.lifecycle !== "archived");
 
@@ -71,6 +78,28 @@ function TodayPage() {
         >
           <WifiOff className="size-4 shrink-0" aria-hidden="true" />
           You're offline — showing your saved data. Check-ins are disabled until you reconnect.
+        </div>
+      )}
+
+      {reviewDue && !hideReview && activeGoals.length > 0 && (
+        <div
+          role="status"
+          className="mb-6 flex items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary-soft px-4 py-3 text-sm text-primary-soft-foreground"
+        >
+          <span>
+            It's Sunday — time for the weekly review.{" "}
+            <Link to="/review" className="font-medium underline underline-offset-4">
+              Open review
+            </Link>
+          </span>
+          <button
+            type="button"
+            aria-label="Dismiss"
+            className="tap flex items-center justify-center"
+            onClick={() => setHideReview(true)}
+          >
+            <X className="size-4" />
+          </button>
         </div>
       )}
 

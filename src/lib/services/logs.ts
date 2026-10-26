@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useState } from "react";
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -127,6 +128,10 @@ export function useLogMutations(userId: string, weekStart: IsoDate) {
     },
     onError: (_error, action, context) => {
       if (context?.previous) qc.setQueryData(key, context.previous);
+      toast.error("Check-in not saved", {
+        description: "Your previous state was restored.",
+        action: { label: "Retry", onClick: () => mutation.mutate(action) },
+      });
       setFailed({
         action,
         message:

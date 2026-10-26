@@ -55,12 +55,18 @@ function WeekPage() {
       </header>
       <p className="mb-4 flex items-center gap-1 text-xs text-muted-foreground">
         Minimum counts as a check-in
-        <InfoTip term="minimum">The smallest version of a routine. It counts toward your weekly target, same as Done.</InfoTip>
+        <InfoTip term="minimum">
+          The smallest version of a routine. It counts toward your weekly target, same as Done.
+        </InfoTip>
         · Below target
-        <InfoTip term="below target">This week's consistency is under your threshold (default 80%) — a signal, not a failure.</InfoTip>
+        <InfoTip term="below target">
+          This week's consistency is under your threshold (default 80%) — a signal, not a failure.
+        </InfoTip>
       </p>
       {withRoutines.length === 0 ? (
-        <EmptyState title="No routines yet.">Weekly progress appears once you have routines.</EmptyState>
+        <EmptyState title="No routines yet.">
+          Weekly progress appears once you have routines.
+        </EmptyState>
       ) : (
         <div className="space-y-4">
           {withRoutines.map((g) => (
