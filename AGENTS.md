@@ -20,3 +20,4 @@
 - Goals/modules are archived, never hard-deleted; derived metrics are never stored as editable columns.
 - Server-maintained fields (revision, audit timestamps, review snapshots) are enforced by triggers, not client code.
 - Colors only via semantic tokens in src/styles.css; logging buttons use Button variants done/minimum/skipped with aria-pressed.
+- Push reminders: `/push-sw.js` is a push-only worker (scope /push/, never caches); a 15-min managed cron hits /api/public/jobs/send-reminders, which dedupes via notification_sends — keeps reminders exactly-once without an app-shell service worker.

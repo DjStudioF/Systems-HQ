@@ -106,7 +106,7 @@ export async function enableThisDevice(userId: string): Promise<string> {
     (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(VAPID_PUBLIC_KEY) }));
   const j = sub.toJSON();
   const { error } = await supabase.from("push_subscriptions").upsert(
-    { user_id: userId, endpoint: sub.endpoint, p256dh: j.keys?.p256dh ?? "", auth: j.keys?.auth ?? "", device_label: deviceLabel() },
+    { user_id: userId, endpoint: sub.endpoint, p256dh: j.keys?.['p256dh'] ?? "", auth: j.keys?.['auth'] ?? "", device_label: deviceLabel() },
     { onConflict: "endpoint" },
   );
   if (error) throw new Error("Couldn't register this device.");
